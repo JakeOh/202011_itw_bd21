@@ -71,13 +71,33 @@ where commission_pct is not null
 order by annual_sal desc;
 
 -- 1) employees 테이블에서 사번이 179인 사원의 레코드를 출력하세요.
--- 2) 1)에서 찾은 정보를 사용해서, 179번 사원의 직책 이름(job_title)을 찾으세요.
--- 3) 1)에서 찾은 정보를 사용해서, 179번 사원의 일하는 부서 레코드를 찾으세요.
--- 4) 1)에서 찾은 정보를 사용해서, 179번 사원의 매니저의 first & last_name을 찾으세요.
--- 5) 3)에서 찾은 정보를 사용해서, 179번 사원이 일하는 부서의 위치 레코드를 찾으세요.
--- 6) departments 테이블에서 manager_id가 있는 부서의 레코드를 출력하세요.
--- 7) departments 테이블에서 부서번호가 20인 부서의 레코드를 출력하세요.
--- 8) 7)에서 찾은 정보를 사용해서, 20번 부서의 관리자(manager)의 레코드를 찾으세요.
--- 9) 7)에서 찾은 정보를 사용해서, 20번 부서의 위치 레코드를 찾으세요.
--- 10) 9)에서 찾은 정보를 사용해서, 20번 부서가 있는 나라의 이름을 찾으세요.
+select * from employees where employee_id = 179;
 
+-- 2) 1)에서 찾은 정보를 사용해서, 179번 사원의 직책 이름(job_title)을 찾으세요.
+select job_title from jobs where job_id = 'SA_REP';
+
+-- 3) 1)에서 찾은 정보를 사용해서, 179번 사원의 일하는 부서 레코드를 찾으세요.
+select * from departments where department_id = 80;
+
+-- 4) 1)에서 찾은 정보를 사용해서, 179번 사원의 매니저의 first & last_name을 찾으세요.
+select first_name, last_name from employees
+where employee_id = 149;
+
+-- 5) 3)에서 찾은 정보를 사용해서, 179번 사원이 일하는 부서의 위치 레코드를 찾으세요.
+select * from locations where location_id = 2500;
+
+-- 6) departments 테이블에서 manager_id가 있는 부서의 레코드를 출력하세요.
+select * from departments where manager_id is not null;
+
+-- 7) departments 테이블에서 부서번호가 20인 부서의 레코드를 출력하세요.
+select * from departments where department_id = 20;
+
+-- 8) 7)에서 찾은 정보를 사용해서, 20번 부서의 관리자(manager)의 레코드를 찾으세요.
+-- 20번 부서의 관리자 사번: 201 -> employees 테이블에서 사번이 201인 사원 정보
+select * from employees where employee_id = 201;
+
+-- 9) 7)에서 찾은 정보를 사용해서, 20번 부서의 위치 레코드를 찾으세요.
+select * from locations where location_id = 1800;
+
+-- 10) 9)에서 찾은 정보를 사용해서, 20번 부서가 있는 나라의 이름을 찾으세요.
+select country_name from countries where country_id = 'CA';
