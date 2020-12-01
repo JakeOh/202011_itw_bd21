@@ -97,3 +97,4 @@ where deptno = 20
   and job not in (
     select distinct job from emp where deptno = 30
   );
+  
