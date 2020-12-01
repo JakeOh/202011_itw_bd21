@@ -160,3 +160,18 @@ group by job
 having count(*) >= 3
 order by job;
 
+-- 연도, 부서번호, 연도별 부서별 입사한 사원수를 출력
+-- 1980년은 제외
+-- 사원수가 2명 이상인 경우만 출력
+-- 연도 순으로 정렬해서 출력
+select to_char(hiredate, 'YYYY') as YEAR, deptno, count(*)
+from emp
+where to_char(hiredate, 'YYYY') != '1980'
+group by to_char(hiredate, 'YYYY'), deptno
+having count(*) >= 2
+order by YEAR;
+
+-- 수당을 받는 사원 수와 수당을 받지 않는 사원 수를 출력.
+select nvl2(comm, 'YES', 'NO'), count(*)
+from emp
+group by nvl2(comm, 'YES', 'NO');
