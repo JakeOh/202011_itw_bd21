@@ -35,3 +35,24 @@ order by d.deptno;
 select d.deptno, d.dname, e.empno, e.ename, e.job, e.sal
 from dept d left join emp e on d.deptno = e.deptno
 order by d.deptno;
+
+select d.deptno, d.dname, e.empno, e.ename, e.job, e.sal
+from emp e right join dept d on e.deptno = d.deptno
+order by d.deptno;
+
+-- 부서번호, 부서이름, 사번, 이름, 매니저 사번, 매니저 이름, 급여, 급여등급을 출력
+-- 모든 부서번호가 출력되어야 함(10, 20, 30, 40).
+-- 매니저가 없는 사원의 정보도 출력되어야 함(KING).
+-- 정렬 순서: 부서번호 -> 사번
+
+-- 부서 위치, 부서에서 근무하는 사원수를 출력(inner join)
+
+-- 부서 위치, 부서에서 근무하는 사원수를 출력.
+-- 사원수가 없는 부서 위치도 출력되어야 함(outer join)
+
+-- 부서 위치, 부서 위치별 급여 합계를 출력.
+-- inner join, outer join 두가지를 비교.
+
+-- 사원이름, 급여, 부서위치, 급여등급을 출력.
+-- 급여는 3000 이상인 직원들만 출력. 사원이름 오름차순 정렬 출력.
+
