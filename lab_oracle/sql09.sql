@@ -125,5 +125,14 @@ order by e1.empno;
 -- 사번, 이름, 부서이름, 급여, 급여등급을 검색
 -- 사번의 오름차순으로 정렬해서 출력.
 -- 1) Oracle
--- 2) ANSI
+select e.empno, e.ename, d.dname, e.sal, s.grade
+from emp e, dept d, salgrade s
+where e.deptno = d.deptno
+  and e.sal between s.losal and s.hisal
+order by e.empno;
 
+-- 2) ANSI
+select e.empno, e.ename, d.dname, e.sal, s.grade
+from emp e join dept d on e.deptno = d.deptno
+     join salgrade s on e.sal between s.losal and s.hisal
+order by e.empno;
