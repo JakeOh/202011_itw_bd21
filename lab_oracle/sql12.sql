@@ -63,6 +63,7 @@ create table students2 (
 
 select * from students2;
 
-insert into students
+insert into students2
 select * from students;
 
+commit;
