@@ -115,3 +115,39 @@ select * from ex_emp;
 insert into ex_emp values (100, '오쌤', 10);
 -- ex_dept 테이블에 10 deptno가 존재하지 않기 때문에
 -- ex_emp 테이블에 deptno 값으로 10을 insert할 수 없음!
+
+insert into ex_dept values (10, 'IT');
+insert into ex_dept values (20, 'HR');
+select * from ex_dept;
+
+-- ex_dept 테이블에 deptno가 10, 20이 있기 때문에
+-- ex_emp 테이블에 insert할 때 deptno 값으로 10 또는 20을 사용할 수 있게 됨.
+insert into ex_emp values (100, '오쌤', 10);
+
+-- foreign key 제약 조건을 별도로 정의하는 경우(테이블 레벨 제약조건):
+create table ex_emp2 (
+    empno number(3),
+    ename varchar2(10),
+    deptno number(2),
+    constraint pk_emp2 primary key (empno),
+    constraint fk_emp2 foreign key (deptno) references ex_dept(deptno)
+);
+
+-- 2개 이상의 컬럼을 고유키(primary key)로 만드는 방법:
+create table ex07 (
+    col_1 number(2) primary key,
+    col_2 varchar2(2) primary key,
+    col_3 date
+);
+-- 하나의 테이블은 PK를 하나만 가질 수 있기 때문에 오류 발생!
+
+create table ex07 (
+    col_1 number(2),
+    col_2 varchar2(2),
+    col_3 date,
+    constraint pk_ex07 primary key (col_1, col_2)
+);
+
+insert into ex07 values (11, 'aa', sysdate);
+insert into ex07 values (11, 'bb', sysdate);
+-- (col_1, col_2) 값의 조합이 unique(중복되지 않음)하고, null 아니어야 함!
