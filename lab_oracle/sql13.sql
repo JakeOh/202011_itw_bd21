@@ -151,3 +151,5 @@ create table ex07 (
 insert into ex07 values (11, 'aa', sysdate);
 insert into ex07 values (11, 'bb', sysdate);
 -- (col_1, col_2) 값의 조합이 unique(중복되지 않음)하고, null 아니어야 함!
+
+commit;
