@@ -63,13 +63,41 @@ describe ex04;
 
 
 -- 1. emp 테이블과 같은 구조(컬럼이름, 데이터 타입)를 갖는 테이블을 test_emp라는 이름으로 생성.
+create table test_emp as
+select * from emp where empno = -1;
+
+describe test_emp;
+select * from test_emp;
+
 -- 2. test_emp 테이블에 etc 컬럼(20 byte 문자열)을 추가.
+alter table test_emp add etc varchar2(20);
+
 -- 3. test_emp 테이블의 ect 컬럼 이름을 remark로 변경.
+alter table test_emp rename column etc to remark;
+
 -- 4. test_emp 테이블의 remark 컬럼의 데이터 타입을 100 byte 문자열로 변경.
+alter table test_emp modify remark varchar2(100);
+
 -- 5. emp 테이블의 모든 행(row)들을 test_emp 테이블에 복사.
+-- insert into TBL_NAME (COL1, ...) values (VAL1, ...);
+insert into test_emp (empno, ename, job, mgr, hiredate, sal, comm, deptno)
+select * from emp;
+
 -- 6. test_emp 테이블의 empno 컬럼에 고유키(primary key) 제약조건을 추가.
+alter table test_emp add constraint pk_test_emp primary key (empno);
+
 -- 7. test_emp 테이블의 deptno 컬럼이 dept 테이블의 deptno를 참조하도록 외래키 제약조건을 추가.
+alter table test_emp
+add constraint fk_test_emp foreign key (deptno) references dept (deptno);
+
 -- 8. test_emp 테이블의 ename 컬럼에 not null 제약조건을 추가.
+alter table test_emp modify ename constraint nn_test_ename not null;
+
 -- 9. 8번에서 만든 제약조건을 삭제.
+alter table test_emp drop constraint nn_test_ename;
+
 -- 10. test_emp 테이블의 comm 컬럼을 삭제.
+alter table test_emp drop column comm;
+
 -- 11. test_emp 테이블 삭제.
+drop table test_emp;
