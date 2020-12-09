@@ -62,3 +62,15 @@ numbers
 numbers <- seq(to = 5)  # from=1, by=1 기본값이 사용됨.
 numbers
 
+countdown <- seq(from = 10, to = 1, by = -1)  # 10부터 1까지 1씩 감소하는 수열 생성.
+countdown
+
+# vector와 scalar 연산
+numbers <- c(1, 10, 100)
+numbers
+numbers + 1
+
+# vector와 vector의 연산
+numbers1 <- c(1, 10, 100)
+numbers2 <- c(2, 4, 6)
+numbers1 + numbers2
