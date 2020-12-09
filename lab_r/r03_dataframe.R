@@ -11,5 +11,27 @@ score <- c(100, 50, 90, 80)
 students <- data.frame(stu_no, stu_name, score)
 students
 
+# students 데이터 프레임에서 번호(stu_no) 컬럼 내용 출력.
+# select stu_no from students;
+# Ctrl+Space: 코드 힌트
+students$stu_no  # data_frame$col_name
 
+# students 데이터 프레임에서 학생들의 점수를 출력.
+students$score
 
+# 수학, 과학, 영어 점수를 저장하는 데이터 프레임.
+scores <- data.frame(math = c(10, 20, 15, 30),
+                     science = c(90, 70, 80, 50),
+                     english = c(55, 60, 70, 87))
+scores
+
+df <- data.frame(A <- 1:3, B <- c('a', 'b', 'c'))
+df
+
+# 함수를 이용해서 패키지를 설치:
+install.packages('tidyverse')
+
+# 설치된 패키지 확인
+installed.packages()
+
+# RStudio -> Tools 메뉴 -> Install Packages...
