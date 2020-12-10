@@ -25,6 +25,7 @@ scores <- data.frame(math = c(10, 20, 15, 30),
                      english = c(55, 60, 70, 87))
 scores
 
+# 권장하지 않는 방법
 df <- data.frame(A <- 1:3, B <- c('a', 'b', 'c'))
 df
 
@@ -35,3 +36,5 @@ install.packages('tidyverse')
 installed.packages()
 
 # RStudio -> Tools 메뉴 -> Install Packages...
+
+library(tidyverse)

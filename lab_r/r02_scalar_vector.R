@@ -8,7 +8,7 @@ name
 # R에서는 문자열을 작은따옴표('') 또는 큰따옴표("")로 묶을 수 있음.
 # (비교) SQL에서는 문자열을 사용할 때 작은따옴표만 사용해야 함.
 
-is_big <- TRUE  # 논릿값(boolean: TRUE, FALSE) 한개를 저장하는 scalar.
+is_big <- TRUE  # 논릿값(logical: TRUE, FALSE) 한개를 저장하는 scalar.
 is_big <- (5 > 3)
 is_big <- (3 > 5)
 # 비교 연산(>, >=, <, <=, ==, !=)
