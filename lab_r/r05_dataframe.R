@@ -31,3 +31,25 @@ summary(exam)
 # summary()는 컬럼 하나의 요약 정보를 볼 수도 있음.
 summary(exam$math)
 
+# 시각화를 통한 데이터 탐색
+# tidyverse 패키지를 메모리에 로딩(검색 경로에 등록)
+library(tidyverse)
+# 패키지가 메모리에 로딩됐는지(검색 경로에 등록됐는지) 확인
+search()
+
+# 히스토그램(histogram):
+# 연속형 변수를 구간으로 나눠서 그 구간에 포함된 데이터 개수를
+# 막대로 표현한 그래프.
+qplot(x = math, data = exam, bins = 5)
+qplot(x = english, data = exam, bins = 5)
+qplot(x = science, data = exam, bins = 5)
+
+# 상자 그림(box plot):
+# 기술 통계량(최솟값, 1사분위값, 중앙값, 3사분위값, 최댓값)을
+# 상자(box)와 수염으로 그린 그래프.
+qplot(y = math, data = exam, geom = 'boxplot')
+summary(exam$math)
+
+qplot(y = english, data = exam, geom = 'boxplot')
+summary(exam$english)
+
