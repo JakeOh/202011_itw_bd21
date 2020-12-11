@@ -45,3 +45,38 @@ ggplot(data = mpg) +
 
 ggplot(data = mpg) +
   geom_boxplot(mapping = aes(y = hwy, group = cyl))
+
+# ggplot 하나에 두개 이상의 geom 함수를 사용하는 경우:
+ggplot(data = mpg) +
+  geom_point(mapping = aes(x = displ, y = hwy)) +
+  geom_smooth(mapping = aes(x = displ, y = hwy))
+
+# 두개 이상의 geom 함수에서 공통으로 사용하는 aesthetic mapping은 
+# ggplot 함수 안에서 설정하는 것이 더 나음.
+ggplot(data = mpg, mapping = aes(x = displ, y = hwy)) +
+  geom_point() +
+  geom_smooth()
+
+# hwy ~ displ의 scatter plot + 회귀 곡선
+# 점의 색깔을 drv에 따라서 다르게 설정.
+ggplot(data = mpg, mapping = aes(x = displ, y = hwy)) +
+  geom_point(mapping = aes(color = drv)) +
+  geom_smooth()
+
+# hwy ~ displ의 point + smooth 그래프
+# 점의 색깔과 선의 색깔을 drv에 따라서 다르게 설정
+ggplot(data = mpg, mapping = aes(x = displ, y = hwy, color = drv)) +
+  geom_point() +
+  geom_smooth()
+
+# hwy ~ displ의 point + smooth 그래프
+# 점의 색깔과 선의 색깔을 drv에 따라서 다르게 설정.
+# 선의 타입을 drv에 따라서 다르게 설정.
+ggplot(data = mpg, mapping = aes(x = displ, y = hwy, color = drv)) +
+  geom_point() +
+  geom_smooth(mapping = aes(linetype = drv))
+
+# 위 그래프와 아래 그래프의 차이점? 
+ggplot(data = mpg, mapping = aes(x = displ, y = hwy)) +
+  geom_point(mapping = aes(color = drv)) +
+  geom_smooth(mapping = aes(linetype = drv))
