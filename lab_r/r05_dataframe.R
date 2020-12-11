@@ -53,3 +53,6 @@ summary(exam$math)
 qplot(y = english, data = exam, geom = 'boxplot')
 summary(exam$english)
 
+# 산점도 그래프(scatter plot):
+# 두 변수 간의 상관 관계를 파악하고자 할 때 많이 사용.
+qplot(x = math, y = science, data = exam)
