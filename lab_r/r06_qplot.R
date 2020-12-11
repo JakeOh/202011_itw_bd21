@@ -25,4 +25,21 @@ qplot(y = hwy, data = mpg, geom = 'boxplot')  # box plot(상자그림)
 
 # 고속도로 연비와 배기량의 관계(hwy ~ displ)
 # y = ax + b: y ~ x
-qplot(x = displ, y = hwy, data = mpg)
+qplot(x = displ, y = hwy, data = mpg)  # 산점도 그래프(scatter plot)
+
+# 명목형 변수(범주형 변수)의 분포 - 빈도수(개수)
+# 구동방식별 자동차 모델 개수
+qplot(x = drv, data = mpg)  # 막대 그래프
+qplot(y = drv, data = mpg, geom = 'bar')  # 가로 막대 그래프
+
+# 연료 타입별 자동차 모델 개수
+qplot(x = fl, data = mpg)
+
+# hwy ~ cyl 그래프
+qplot(x = cyl, y = hwy, data = mpg)
+
+# hwy ~ drv 그래프
+qplot(x = drv, y = hwy, data = mpg)
+
+# hwy ~ cty 그래프
+qplot(x = cty, y = hwy, data = mpg)
