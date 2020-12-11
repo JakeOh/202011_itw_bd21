@@ -59,3 +59,7 @@ g <- ggplot(data = mpg)
 g + geom_point(mapping = aes(x = displ, y = hwy))
 g + geom_point(mapping = aes(x = cyl, y = hwy))
 g + geom_point(mapping = aes(x = fl, y = hwy))
+
+ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = displ, y = hwy, color = drv), shape = 1) +
+  geom_point(mapping = aes(x = displ, y = cty, color = drv), shape = 2)
