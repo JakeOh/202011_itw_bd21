@@ -111,3 +111,28 @@ mpg %>%
   filter(class == 'compact') %>% 
   group_by(manufacturer) %>% 
   count()
+
+# 다음 두 문장의 실행 결과 차이
+# 1)
+mpg %>% 
+  filter(hwy > mean(hwy)) %>% 
+  group_by(class) %>% 
+  count()
+#> mean(hwy): 전체 자동차의 hwy 평균
+
+# 2)
+mpg %>% 
+  group_by(class) %>% 
+  filter(hwy > mean(hwy)) %>% 
+  count()
+#> mean(hwy): 각 자동차 클래스의 hwy 평균
+
+# 회사별 'suv' 자동차의 통합연비((cty + hwy)/2) 평균을 구하고,
+# 통합연비 평균의 내림차순으로 정렬해서, 1 ~ 3위 출력
+mpg %>% 
+  filter(class == 'suv') %>%                   # 'suv'만 선택
+  mutate(total_mpg = (cty + hwy) / 2) %>%      # 통합연비 변수 추가
+  group_by(manufacturer) %>%                   # 제조사별 그룹
+  summarize(mean_total = mean(total_mpg)) %>%  # 그룹별 통합연비 평균 계산
+  arrange(desc(mean_total)) %>%                # 통합연비 평균의 내림차순 정렬
+  head(n = 3)                                  # 1 ~ 3위 선택
