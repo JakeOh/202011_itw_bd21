@@ -73,6 +73,41 @@ exam %>%
   group_by(class) %>% 
   summarize(mean_math = mean(math)) %>% 
   ggplot() + 
-  geom_col(mapping = aes(x = class, y = mean_math, fill = class))
+  geom_col(mapping = aes(x = class, y = mean_math))
 
 
+# ggplot2::mpg 데이터 셋 사용
+# 자동차 class별 자동차 모델 수, 시각화
+mpg %>% 
+  group_by(class) %>% 
+  count()  # summarize(n = n())
+
+ggplot(mpg) + geom_bar(aes(x = class))
+
+# 자동차 class별 hwy 평균을 출력, 시각화
+df <- mpg %>% 
+  group_by(class) %>% 
+  summarize(mean_hwy = mean(hwy))
+df
+ggplot(df) + geom_col(aes(x = class, y = mean_hwy))
+
+# 자동차 제조사별 hwy 평균이 가장 높은 1 ~ 5위 출력, 시각화
+df <- mpg %>% 
+  group_by(manufacturer) %>% 
+  summarize(mean_hwy = mean(hwy)) %>% 
+  arrange(desc(mean_hwy)) %>% 
+  head(n = 5)
+df
+ggplot(df) + 
+  geom_col(aes(x = reorder(manufacturer, desc(mean_hwy)), y = mean_hwy))
+
+# 자동차 회사별 compact 자동차 모델의 수를 출력
+mpg %>% 
+  group_by(manufacturer) %>% 
+  filter(class == 'compact') %>% 
+  count() # summarize(n = n())
+
+mpg %>% 
+  filter(class == 'compact') %>% 
+  group_by(manufacturer) %>% 
+  count()
