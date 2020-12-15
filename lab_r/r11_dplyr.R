@@ -99,10 +99,21 @@ exam %>%
   arrange(desc(total)) %>%                      # 총점 내림차순 정렬
   head(n = 5)                                   # 상위 5명 출력
 
-# ggplot2::mpg 데이터 셋에 avg_mpg(도시, 고소도로 연비 평균) 파생 변수를 추가하고,
+# ggplot2::mpg 데이터 셋에 avg_mpg(도시, 고속도로 연비 평균) 파생 변수를 추가하고,
 # avg_mpg의 상위 5개 자동차의 제조사, 모델, avg_mpg를 출력
 mpg %>% 
   mutate(avg_mpg = (cty + hwy) / 2) %>% 
   arrange(desc(avg_mpg)) %>% 
   head(n = 5) %>% 
   select(manufacturer, model, avg_mpg)
+
+# mpg 데이터 셋에 avg_mpg(도시, 고속도로 연비 평균) 파생 변수를 추가하고,
+#   avg_mpg >= 30, grade = 'A',
+#   avg_mpg >= 20, grade = 'B',
+#   avg_mpg < 20, grade = 'C' 
+# 파생변수 avg_mpg 추가.
+mpg %>% 
+  mutate(avg_mpg = (cty + hwy) / 2,
+         grade = ifelse(avg_mpg >= 30, 'A',
+                        ifelse(avg_mpg >= 20, 'B', 'C'))) %>% 
+  select(cty, hwy, avg_mpg, grade)
