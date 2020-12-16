@@ -55,3 +55,16 @@ midwest_df %>%
   head(n = 10) %>% 
   select(state, county, asia_pct)
 
+
+# dplyr::count() 함수
+exam <- read.csv(file = 'data/csv_exam.csv')
+
+exam %>% summarize(n = n())  # 데이터 프레임의 row(observation) 개수
+exam %>% count()
+#> count()는 summarize(n = n())과 같은 결과.
+
+# class별 학생 수
+exam %>% group_by(class) %>% summarize(n = n())
+# exam %>% group_by(class) %>% count()
+exam %>% count(class)
+#> count(var_name)는 group_by(var_name) %>% summarize(n = n())과 같은 결과.
