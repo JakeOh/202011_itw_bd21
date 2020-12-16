@@ -128,4 +128,58 @@ gapminder %>%
   filter(gdpPercap == max(gdpPercap)) %>% 
   arrange(continent)
 
+# 연도별, 대륙별 인구수
+df <- gapminder %>% 
+  group_by(year, continent) %>% 
+  summarize(pop = sum(pop))
+df
+ggplot(data = df, mapping = aes(x = year, y = pop, color = continent)) +
+  geom_line() + geom_point()
 
+df <- gapminder %>% 
+  group_by(year, continent) %>% 
+  summarize(pop = sum(pop)) %>% 
+  pivot_wider(names_from = continent, values_from = pop)
+df
+ggplot(data = df, mapping = aes(x = year)) +
+  geom_line(mapping = aes(y = Africa, color = 'Africa')) +
+  geom_line(mapping = aes(y = Americas, color = 'Americas')) +
+  geom_line(mapping = aes(y = Asia, color = 'Asia')) +
+  geom_line(mapping = aes(y = Europe, color = 'Europe')) +
+  geom_line(mapping = aes(y = Oceania, color = 'Oceania')) +
+  ylab('population')
+
+# 연도별, 대륙별 lifeExp의 평균
+df <- gapminder %>% 
+  group_by(year, continent) %>% 
+  summarize(life_exp = mean(lifeExp))
+df
+ggplot(data = df, mapping = aes(x = year, y = life_exp, color = continent)) +
+  geom_line() +
+  geom_point()
+
+gapminder %>% 
+  group_by(year, continent) %>% 
+  summarize(life_exp = mean(lifeExp)) %>% 
+  pivot_wider(names_from = continent, values_from = life_exp)
+
+# 연도별, 대륙별 gdpPercap의 평균
+df <- gapminder %>% 
+  group_by(year, continent) %>% 
+  summarize(gdp_per_cap = mean(gdpPercap))
+df
+ggplot(data = df, mapping = aes(x = year, y = gdp_per_cap, color = continent)) +
+  geom_point() +
+  geom_line()
+
+gapminder %>% 
+  group_by(year, continent) %>% 
+  summarize(gdp_per_cap = mean(gdpPercap)) %>% 
+  pivot_wider(names_from = continent, values_from = gdp_per_cap)
+
+# Egypt, Gabon, South Africa, Zimbabwe의 기대 수명(lifeExp)의 시계열
+gapminder %>% 
+  filter(country %in% c('Egypt', 'Gabon', 'South Africa', 'Zimbabwe')) %>% 
+  ggplot(mapping = aes(x = year, y = lifeExp, color = country)) +
+  geom_point() + 
+  geom_line()
