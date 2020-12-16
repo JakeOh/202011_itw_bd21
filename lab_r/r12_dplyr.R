@@ -27,7 +27,8 @@ exam %>%
 
 summarize(exam, n = n())  # 데이터 프레임의 row 개수(observation 개수)
 exam %>% summarise(n = n())
-exam %>% count()  # count() 함수는 summarize(n = n()) 호출을 간단히 표현한 함수.
+exam %>% count()  
+# count() 함수는 summarize(n = n()) 호출을 간단히 표현한 함수.
 
 # (주의) summary() vs summarize()
 summary(exam)
@@ -44,9 +45,8 @@ exam %>%
   group_by(class) %>% 
   summarize(n = n())
 
-exam %>% 
-  group_by(class) %>% 
-  count()
+exam %>% count(class)
+# count(var) 함수는 group_by(var) %>% summarize(n = n())과 같은 결과.
 
 # exam 데이터 프레임에서 class별 수학 점수 평균, 중앙값, 최댓값, 최솟값
 df <- exam %>% 
@@ -110,21 +110,25 @@ mpg %>%
 mpg %>% 
   filter(class == 'compact') %>% 
   group_by(manufacturer) %>% 
-  count()
+  summarize(n = n())
+
+mpg %>% 
+  filter(class == 'compact') %>% 
+  count(manufacturer)
 
 # 다음 두 문장의 실행 결과 차이
 # 1)
 mpg %>% 
   filter(hwy > mean(hwy)) %>% 
   group_by(class) %>% 
-  count()
+  summarize(n = n())
 #> mean(hwy): 전체 자동차의 hwy 평균
 
 # 2)
 mpg %>% 
   group_by(class) %>% 
   filter(hwy > mean(hwy)) %>% 
-  count()
+  summarize(n = n())
 #> mean(hwy): 각 자동차 클래스의 hwy 평균
 
 # 회사별 'suv' 자동차의 통합연비((cty + hwy)/2) 평균을 구하고,
