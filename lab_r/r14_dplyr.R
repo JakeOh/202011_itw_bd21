@@ -71,7 +71,61 @@ ggplot(data = gapminder_kr, mapping = aes(x = year, y = gdpPercap)) +
   geom_line()
 
 # 2007년의 1인당 GDP 상위 5개 나라를 출력. 시각화.
+df <- gapminder %>% 
+  filter(year == 2007) %>%       # 2007년 선택
+  arrange(desc(gdpPercap)) %>%   # gdpPercap 내림차순 정렬
+  head(n = 5)                    # 상위 5개 선택
+df
+ggplot(data = df) +
+  geom_col(mapping = aes(x = reorder(country, desc(gdpPercap)), 
+                         y = gdpPercap)) +
+  xlab('country') +
+  coord_cartesian(ylim = c(35000, 50000))
 
 # 2007년의 1인당 GDP 하위 5개 나라를 출력. 시각화.
+df <- gapminder %>% 
+  filter(year == 2007) %>% 
+  arrange(gdpPercap) %>% 
+  head(n = 5)
+df
+ggplot(data = df) +
+  geom_col(mapping = aes(x = reorder(country, gdpPercap),
+                         y = gdpPercap)) +
+  coord_cartesian(ylim = c(200, 600)) +
+  xlab('country')
+
+# 2007년 lifeExp 상위 5개 국가 출력, 시각화.
+df <- gapminder %>% 
+  filter(year == 2007) %>% 
+  arrange(desc(lifeExp)) %>% 
+  head(n = 5)
+
+df
+
+ggplot(data = df) +
+  geom_col(mapping = aes(x = country, y = lifeExp))
+
+# 2007년 lifeExp 하위 5개 국가 출력, 시각화.
+df <- gapminder %>% 
+  filter(year == 2007) %>% 
+  arrange(lifeExp) %>% 
+  head(n = 5)
+
+df
+
+ggplot(data = df) +
+  geom_col(mapping = aes(x = country, y = lifeExp))
+
+# 연도별 1인당 GDP 최댓값인 레코드 출력
+gapminder %>% 
+  group_by(year) %>% 
+  filter(gdpPercap == max(gdpPercap)) %>% 
+  arrange(year)
+
+# 대륙별 1인당 GDP 최댓값인 레코드 출력
+gapminder %>% 
+  group_by(continent) %>% 
+  filter(gdpPercap == max(gdpPercap)) %>% 
+  arrange(continent)
 
 
