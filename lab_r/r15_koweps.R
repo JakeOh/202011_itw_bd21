@@ -52,3 +52,75 @@ welfare$gender <- factor(welfare$gender,                # factor 타입으로 �
                          labels = c('Male', 'Female'))  # 각각의 값들에 붙여줄 별명.
 str(welfare)
 table(welfare$gender)
+
+# as.xxx(arg): arg를 명시적 타입 변환(explicit type conversion) 
+# as.factor(), as.integr(), as.double(), as.numeric(), as.logical(), 
+# as.character() as.data.frame(), as.Date()
+int_vector <- c(1, 1, 2, 2, 3, 3)
+class(int_vector)
+fac_1 <- as.factor(int_vector)  # levels, labels을 지정할 수 없음.
+class(fac_1)
+fac_1
+
+logi_vector <- c(TRUE, TRUE, FALSE, TRUE, FALSE)
+class(logi_vector)
+fac_2 <- as.factor(logi_vector)
+class(fac_2)
+fac_2
+
+char_vector <- c('male', 'male', 'female', 'female')
+class(char_vector)
+fac_3 <- as.factor(char_vector)
+class(fac_3)
+fac_3
+
+# 성별 시각화 -> 막대 그래프
+ggplot(data = welfare) +
+  geom_bar(mapping = aes(x = gender, fill = gender))
+
+# 성별 월 수입 차이?
+# income(월 수입) 변수 확인
+class(welfare$income)  #> numeric(숫자 타입)
+# 기술 통계량(descriptive statistics): 최솟값, 최댓값, 평균, 중앙값, ...
+summary(welfare$income)
+
+# 코드북: 소득의 정상 범위 1 ~ 9998
+welfare %>% filter(income < 1 | income > 9998)
+
+# income의 범위가 1 ~ 9998인 것만 정상 데이터로 생각하고, 
+# 그 이외의 값들은 NA로 처리.
+welfare$income <- ifelse(welfare$income >= 1 & welfare$income <= 9998, 
+                         welfare$income, NA)
+summary(welfare$income)
+
+# 월 소득 분포 시각화 - box plot, histogram
+ggplot(data = welfare) +
+  geom_boxplot(mapping = aes(y = income))
+
+ggplot(data = welfare) +
+  geom_histogram(mapping = aes(x = income))
+#> right-skewed distribution: 오른쪽으로 꼬리가 긴 분포
+
+# 성별 월 소득 평균: group_by() %>% summarize()
+mean(welfare$income)
+mean(welfare$income, na.rm = TRUE)
+# 숫자형 데이터들을 집계(sum, mean, median, sd, ...)할 때 NA가 있으면 결과도 NA
+# 집계 함수들은 na.rm 파라미터를 가지고 있음. na.rm의 기본값은 FALSE.
+# NA들을 제외하고 집계할 때는 na.rm = TRUE로 설정.
+
+welfare %>% 
+  group_by(gender) %>% 
+  summarize(mean_income = mean(income, na.rm = TRUE))
+
+# is.na(x): x가 NA이면 TRUE, NA가 아니면 FALSE 리턴하는 함수.
+# x = NA와 같이 비교하면 안됨!
+income_by_gender <- welfare %>% 
+  filter(!is.na(income)) %>%             # income이 NA가 아닌 자료들을 선택
+  group_by(gender) %>%                   # gender별로 그룹
+  summarize(mean_income = mean(income))  # 그룹별 평균
+
+income_by_gender
+
+# 성별 월 소득 시각화 - 막대 그래프
+
+
