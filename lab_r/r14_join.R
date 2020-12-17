@@ -42,6 +42,9 @@ dept2 <- data.frame(dept_no = c(10, 20, 30),
 # by를 생략할 수 없음!
 # by = c('left_table_col_name' = 'right_table_col_name')
 inner_join(emp, dept2, by = c('deptno' = 'dept_no'))
+left_join(emp, dept2, by = c('deptno' = 'dept_no'))
+right_join(emp, dept2, by = c('deptno' = 'dept_no'))
+full_join(emp, dept2, by = c('deptno' = 'dept_no'))
 
 # join 연습
 # ggplot2::mpg 데이터 셋과 join하기 위한 데이터 프레임
@@ -56,3 +59,26 @@ mpg %>%
   inner_join(fuel) %>% 
   mutate(fuel_price = hwy * price) %>% 
   select(model, hwy, price, fuel_price)
+
+
+# 행(row) 합치기: bind_rows()
+students1 <- data.frame(stu_id = 1:3,
+                        stu_name = c('Aaa', 'Bbb', 'Ccc'),
+                        dept = c('IT', 'IT', 'Language'))
+students1
+
+students2 <- data.frame(stu_id = 11:13,
+                        stu_name = c('Ddd', 'Eee', 'Fff'),
+                        dept = c('IT', 'Language', 'Math'))
+students2
+
+bind_rows(students1, students2)
+students1 %>% bind_rows(students2)
+
+df1 <- data.frame(A = 1:3,
+                  B = c('a', 'b', 'c'))
+df2 <- data.frame(B = c('d', 'e', 'f'),
+                  C = 4:6)
+df1
+df2
+bind_rows(df1, df2)
