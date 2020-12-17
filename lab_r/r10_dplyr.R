@@ -131,4 +131,3 @@ mpg_cly6 <- mpg %>% filter(cyl == 6)
 mean(mpg_cly6$hwy)
 
 mean((mpg%>%filter(cyl==4))$hwy)
-
