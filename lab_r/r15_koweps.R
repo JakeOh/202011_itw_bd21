@@ -122,5 +122,31 @@ income_by_gender <- welfare %>%
 income_by_gender
 
 # 성별 월 소득 시각화 - 막대 그래프
+ggplot(data = income_by_gender) +
+  geom_col(mapping = aes(x = gender, y = mean_income, fill = gender))
+
+
+# 나이에 따라서 월 소득 차이?
+# birth(출생 연도) 변수 확인
+class(welfare$birth)
+summary(welfare$birth)  #> 이상치가 없음. NA 없음.
+
+# age(나이) 파생 변수 생성 - mutate
+welfare <- welfare %>% mutate(age = 2015 - birth)
+head(welfare)
+
+# 나이별 인구수
+table(welfare$age)
+
+ggplot(data = welfare) +
+  geom_bar(mapping = aes(x = age))
+
+# 각 나이별 평균 월 수입
+
+# 평균 월 수입이 가장 많은 나이?
+
+
+
+
 
 
