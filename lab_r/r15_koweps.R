@@ -142,11 +142,58 @@ ggplot(data = welfare) +
   geom_bar(mapping = aes(x = age))
 
 # 각 나이별 평균 월 수입
+income_by_age <- welfare %>% 
+  group_by(age) %>% 
+  summarize(mean_income = mean(income, na.rm = TRUE))
 
-# 평균 월 수입이 가장 많은 나이?
+income_by_age
+income_by_age[20:25, ]
+summary(income_by_age$mean_income)  #> 평균이 NaN인 자료가 33개
 
+ggplot(data = income_by_age) +
+  geom_col(mapping = aes(x = age, y = mean_income))
 
+# 위의 결과와 비교
+income_by_age2 <- welfare %>% 
+  filter(!is.na(income)) %>% 
+  group_by(age) %>% 
+  summarize(mean_income = mean(income))
 
+income_by_age2
 
+ggplot(data = income_by_age2) +
+  geom_col(mapping = aes(x = age, y = mean_income))
 
+ggplot(data = income_by_age2) +
+  geom_line(mapping = aes(x = age, y = mean_income))
 
+# 평균 월 소득이 가장 많은 나이?
+income_by_age2 %>% filter(mean_income == max(mean_income))  #> 52
+
+# age별, gender별 평균 월 소득
+income_by_age_gender <- welfare %>% 
+  group_by(age, gender) %>% 
+  summarize(mean_income = mean(income, na.rm = TRUE))
+
+income_by_age_gender
+summary(income_by_age_gender$mean_income)
+
+ggplot(data = income_by_age_gender) +
+  geom_col(mapping = aes(x = age, y = mean_income, fill = gender))
+
+income_by_age_gender <- welfare %>% 
+  filter(!is.na(income)) %>% 
+  group_by(age, gender) %>% 
+  summarize(mean_income = mean(income))
+
+income_by_age_gender
+
+ggplot(income_by_age_gender) +
+  geom_col(mapping = aes(x = age, y = mean_income, fill = gender))
+
+ggplot(income_by_age_gender) +
+  geom_col(mapping = aes(x = age, y = mean_income, fill = gender),
+           position = 'dodge')
+
+ggplot(income_by_age_gender) +
+  geom_line(mapping = aes(x = age, y = mean_income, color = gender))
