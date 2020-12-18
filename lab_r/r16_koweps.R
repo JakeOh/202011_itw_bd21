@@ -140,3 +140,80 @@ bottom10 <- tail(income_by_job, n = 10)
 ggplot(data = bottom10) +
   geom_col(mapping = aes(x = mean_income, 
                          y = reorder(job, desc(mean_income))))
+
+# 직종별 인구수 20명 이상인 직종에서 월 소득 평균 상/하위 10개
+top10 <- income_by_job %>% filter(n >= 20) %>% head(n = 10)
+ggplot(data = top10) +
+  geom_col(mapping = aes(x = mean_income, y = reorder(job, mean_income)))
+
+bottom10 <- income_by_job %>% filter(n >= 20) %>% tail(n = 10)
+bottom10
+ggplot(data = bottom10) +
+  geom_col(mapping = aes(x = mean_income, 
+                         y = reorder(job, desc(mean_income))))
+
+# 남성 평균 월 소득 상위 10개 직종. 직종별 남성 인구가 10명 이상인 경우.
+male_top10 <- welfare %>% 
+  filter(!is.na(income) & !is.na(job) & gender == 'Male') %>% 
+  group_by(job) %>% 
+  summarize(mean_income = mean(income), n = n()) %>% 
+  filter(n >= 10) %>% 
+  arrange(desc(mean_income)) %>% 
+  head(n = 10)
+
+male_top10  
+
+# 여성 평균 월 소득 상위 10개 직종. 직종별 여성 인구가 10명 이상인 경우.
+female_top10 <- welfare %>% 
+  filter(!is.na(income) & !is.na(job) & gender == 'Female') %>% 
+  group_by(job) %>% 
+  summarize(mean_income = mean(income), n = n()) %>% 
+  filter(n >= 10) %>% 
+  arrange(desc(mean_income)) %>% 
+  head(n = 10)
+
+female_top10
+
+# 10대, 20대 여성의 평균 월 소득 상위 10개 직종
+young_female_top10 <- welfare %>% 
+  filter(!is.na(income) & !is.na(job) & gender == 'Female' &
+           age_range %in% c('age10', 'age20')) %>% 
+  group_by(job) %>% 
+  summarize(mean_income = mean(income), n = n()) %>% 
+  arrange(desc(mean_income)) %>% 
+  head(n = 10)
+
+young_female_top10
+
+# 10대, 20대 남성의 평균 월 소득 상위 10개 직종
+young_male_top10 <- welfare %>% 
+  filter(!is.na(income) & !is.na(job) & gender == 'Male' &
+           age_range %in% c('age10', 'age20')) %>% 
+  group_by(job) %>% 
+  summarize(mean_income = mean(income), n = n()) %>% 
+  arrange(desc(mean_income)) %>% 
+  head(n = 10)
+
+young_male_top10
+
+# 30대, 40대, 50대 여성의 평균 월 소득 상위 10개 직종
+middle_female_top10 <- welfare %>% 
+  filter(!is.na(income) & !is.na(job) & gender == 'Female' &
+           age_range %in% c('age30', 'age40', 'age50')) %>% 
+  group_by(job) %>% 
+  summarize(mean_income = mean(income), n = n()) %>% 
+  arrange(desc(mean_income)) %>% 
+  head(n = 10)
+
+middle_female_top10
+
+# 30대, 40대, 50대 남성의 평균 월 소득 상위 10개 직종
+middle_male_top10 <- welfare %>% 
+  filter(!is.na(income) & !is.na(job) & gender == 'Male' &
+           age_range %in% c('age30', 'age40', 'age50')) %>% 
+  group_by(job) %>% 
+  summarize(mean_income = mean(income), n = n()) %>% 
+  arrange(desc(mean_income)) %>% 
+  head(n = 10)
+
+middle_male_top10
