@@ -89,8 +89,10 @@ job_gender <- welfare %>%
   count(job, gender) %>%  # job별 gender별 인구수
   pivot_wider(names_from = gender, values_from = n) %>%  # pivoting
   # mutate(diff = replace_na(Female, 0) - replace_na(Male, 0))
-  replace(is.na(.), 0) %>%
-  mutate(diff = Female - Male)
+  replace(is.na(.), 0) %>%  # 데이터 프레임에서 모든 NA를 0으로 대체
+  mutate(diff = Female - Male,
+         female_ratio = Female / (Female + Male),
+         male_ratio = Male / (Female + Male))  # 파생 변수 추가.
 
 job_gender
 
@@ -108,3 +110,33 @@ df <- data.frame(col1 = c(1, NA, 2),
                  col2 = c(1, 2, NA))
 df
 is.na(df)
+
+# 여성 인구 비율이 높은 직종 상위 10개
+job_gender %>% 
+  arrange(desc(female_ratio), desc(diff)) %>% 
+  head(n = 10)
+
+# 남성 인구 비율이 높은 직종 상위 10개
+job_gender %>% 
+  arrange(desc(female_ratio), desc(diff)) %>% 
+  tail(n = 10)
+
+
+# 직종별 월 소득 평균 상위 10개 -> 시각화
+income_by_job <- welfare %>% 
+  filter(!is.na(income) & !is.na(job)) %>%  # income과 job이 있는 자료들을 선택
+  group_by(job) %>%  # job별 그룹
+  summarize(mean_income = mean(income), n = n()) %>%   # 그룹별 평균 속득, 인구수 요약
+  arrange(desc(mean_income))  # 평균 월 소득 내림차순 정렬
+
+income_by_job
+
+top10 <- income_by_job %>% head(n = 10)
+ggplot(data = top10) +
+  geom_col(mapping = aes(x = mean_income, y = reorder(job, mean_income)))
+
+# 직종별 월 소득 평균 하위 10개 -> 시각화
+bottom10 <- tail(income_by_job, n = 10)
+ggplot(data = bottom10) +
+  geom_col(mapping = aes(x = mean_income, 
+                         y = reorder(job, desc(mean_income))))
