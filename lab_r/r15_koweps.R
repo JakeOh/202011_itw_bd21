@@ -203,3 +203,57 @@ ggplot(income_by_age_gender) +
 
 ggplot(income_by_age_gender) +
   geom_line(mapping = aes(x = age, y = mean_income, color = gender))
+
+
+# 연령대별 인구 수 -> 연령대별 월 소득 파악
+# 파생 변수: age_range 
+# 20-(age10), 20-29(age20), 30-39(age30), 40-49(age40), 
+# 50-59(age50), 60-69(age60), 70-79(age70), 80+(age80)
+
+welfare <- welfare %>% 
+  mutate(age_range = ifelse(age < 20, 'age10', 
+                            ifelse(age < 30, 'age20',
+                                   ifelse(age < 40, 'age30',
+                                          ifelse(age < 50, 'age40', 
+                                                 ifelse(age < 60, 'age50',
+                                                        ifelse(age < 70, 'age60',
+                                                               ifelse(age < 80, 'age70', 'age80'))))))))
+
+head(welfare)
+
+# 연령대별 인구수
+table(welfare$age_range)
+ggplot(data = welfare) +
+  geom_bar(mapping = aes(x = age_range))
+
+# 연령대별 월 소득 평균
+income_by_agerange <- welfare %>% 
+  filter(!is.na(income)) %>% 
+  group_by(age_range) %>% 
+  summarize(mean_income = mean(income))
+
+income_by_agerange
+
+ggplot(data = income_by_agerange) +
+  geom_col(mapping = aes(x = age_range, y = mean_income))
+
+# 연령대(age_range)별 성(gender)별 월 소득(income) 평균
+income_by_agerange_gender <- welfare %>% 
+  filter(!is.na(income)) %>% 
+  group_by(age_range, gender) %>% 
+  summarize(mean_income = mean(income))
+
+income_by_agerange_gender
+
+ggplot(data = income_by_agerange_gender) +
+  geom_col(mapping = aes(x = age_range, y = mean_income, fill = gender))
+
+ggplot(data = income_by_agerange_gender) +
+  geom_col(mapping = aes(x = age_range, y = mean_income, fill = gender),
+           position = 'dodge')
+
+ggplot(data = income_by_agerange_gender, 
+       mapping = aes(x = age_range, y = mean_income,
+                     group = gender, color = gender)) +
+  geom_line() +
+  geom_point()
