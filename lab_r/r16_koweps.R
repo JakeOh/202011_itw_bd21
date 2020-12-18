@@ -217,3 +217,18 @@ middle_male_top10 <- welfare %>%
   head(n = 10)
 
 middle_male_top10
+
+# Chapter 2(ggplot2), 3(dplyr), 5(탐색적 데이터 분석), 8(readr), 9(tidyr), 10(dplyr)
+
+welfare %>% 
+  filter(!is.na(income) & !is.na(job)) %>% 
+  group_by(age_range, gender, job) %>% 
+  summarise(n = n(), AVG = mean(income)) %>% 
+  filter(gender == 'Male' & age_range %in% c('age30', 'age40', 'age50')) %>% 
+  arrange(desc(AVG)) %>% 
+  head(n = 10) %>% 
+  mutate(age_job = paste(age_range, job)) %>%  
+  ggplot() +
+  geom_col(mapping = aes(x = AVG, y = reorder(age_job, AVG),
+                         fill = age_range))
+
