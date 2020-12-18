@@ -79,3 +79,32 @@ job_female_top10
 ggplot(data = job_female_top10) +
   geom_col(mapping = aes(x = n, y = reorder(job, n))) +
   ylab('job')
+
+# 종사하는 인구수가 성별로 차이가 많은 직종
+# 1) (여성 - 남성) 내림차순 정렬 상위 10개 - 남성에 비해 여성이 더 많이 근무하는 직종 
+# 2) (여성 - 남성) 내림차순 정렬 하위 10개 - 여성에 비해 남성이 더 많이 근무하는 직종
+
+job_gender <- welfare %>% 
+  filter(!is.na(job)) %>%  # job이 있는 자료들만 선택
+  count(job, gender) %>%  # job별 gender별 인구수
+  pivot_wider(names_from = gender, values_from = n) %>%  # pivoting
+  # mutate(diff = replace_na(Female, 0) - replace_na(Male, 0))
+  replace(is.na(.), 0) %>%
+  mutate(diff = Female - Male)
+
+job_gender
+
+# 여성이 남성보다 많이 일하는 직종
+job_gender %>% 
+  arrange(desc(diff)) %>% 
+  head(n = 10)
+
+# 남성이 여성보다 많이 일하는 직종
+job_gender %>% 
+  arrange(desc(diff)) %>% 
+  tail(n = 10)
+
+df <- data.frame(col1 = c(1, NA, 2),
+                 col2 = c(1, 2, NA))
+df
+is.na(df)
