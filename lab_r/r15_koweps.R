@@ -53,6 +53,7 @@ welfare$gender <- factor(welfare$gender,                # factor 타입으로 �
 str(welfare)
 table(welfare$gender)
 
+# 묵시적 타입 변환(implicit type conversion)
 # as.xxx(arg): arg를 명시적 타입 변환(explicit type conversion) 
 # as.factor(), as.integr(), as.double(), as.numeric(), as.logical(), 
 # as.character() as.data.frame(), as.Date()
@@ -169,6 +170,11 @@ ggplot(data = income_by_age2) +
 
 # 평균 월 소득이 가장 많은 나이?
 income_by_age2 %>% filter(mean_income == max(mean_income))  #> 52
+
+ggplot(data = income_by_age2) +
+  geom_line(mapping = aes(x = age, y = mean_income)) +
+  geom_vline(xintercept = 52, color = 'red')
+  # vline: vertical line(수직선), xintercept: x절편(x축과 만나는 점)
 
 # age별, gender별 평균 월 소득
 income_by_age_gender <- welfare %>% 
