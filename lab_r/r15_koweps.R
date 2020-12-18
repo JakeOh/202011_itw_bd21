@@ -257,3 +257,8 @@ ggplot(data = income_by_agerange_gender,
                      group = gender, color = gender)) +
   geom_line() +
   geom_point()
+
+
+# Global Environment에 있는 객체(object)를 파일 저장.
+# base::save(obj1, obj2, ..., file = 'file_name.rdata')
+save(koweps, welfare, file = 'data/koweps.RData')
