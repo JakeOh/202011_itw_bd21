@@ -218,6 +218,9 @@ middle_male_top10 <- welfare %>%
 
 middle_male_top10
 
+# RData 파일에 저장:
+save(koweps, welfare, file = 'data/koweps.RData')
+
 # Chapter 2(ggplot2), 3(dplyr), 5(탐색적 데이터 분석), 8(readr), 9(tidyr), 10(dplyr)
 
 welfare %>% 
