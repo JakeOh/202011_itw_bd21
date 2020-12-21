@@ -21,4 +21,40 @@ ggplotly(g)
 # 저장된 html 파일은 웹 브라우저(크롬, 엣지 등)로 볼 수 있음.
 
 # ggplot 객체없이 직접 interactive 그래프 그리기.
-plot_ly(data = mpg, x = ~displ, y = ~hwy, color = ~drv)
+plot_ly(data = mpg, x = ~displ, y = ~hwy, color = ~drv, type = 'scatter')
+
+# hwy ~ displ 산점도 그래프. 
+# 점의 색깔은 drv에 따라서, 점의 모양은 class에 따라서 다르게 설정.
+g <- ggplot(data = mpg) +
+  geom_point(mapping = aes(x = displ, y = hwy, color = drv, shape = class))
+g
+ggplotly(g)
+
+plot_ly(data = mpg, type = 'scatter',
+        x = ~displ, y = ~hwy, color = ~drv, symbol = ~class)
+
+# drv별 hwy의 boxplot
+g <- ggplot(data = mpg) +
+  geom_boxplot(mapping = aes(x = drv, y = hwy))
+g
+ggplotly(g)
+
+plot_ly(data = mpg, type = 'box', x = ~drv, y = ~hwy)
+
+# ggplot2::economics 데이터 셋
+head(economics)
+tail(economics)
+
+# 시간(date)에 따른 개인 저축률(psavert)의 변화 시계열 그래프(선 그래프)
+g <- ggplot(data = economics,
+            mapping = aes(x = date, y = psavert)) +
+  geom_line()
+g
+ggplotly(g)
+
+plot_ly(data = economics, type = 'scatter', mode = 'lines',
+        x = ~date, y = ~psavert)
+
+# economics에 실업률(%) 파생 변수가 추가된 데이터 프레임 생성
+# 시간에 따른 실업률 시계열 그래프
+
