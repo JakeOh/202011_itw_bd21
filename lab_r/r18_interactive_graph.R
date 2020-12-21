@@ -70,3 +70,22 @@ ggplotly(g)
 
 plot_ly(data = economics, type = 'scatter', mode = 'lines',
         x = ~date, y = ~unemploy_pct)
+
+# 날짜(date)에 따른 개인저축률(psavert), 실업률(unemploy_pct) 시계열 그래프
+g <- ggplot(data = economics, mapping = aes(x = date)) +
+  geom_line(mapping = aes(y = psavert, color = 'psavert')) +
+  geom_line(mapping = aes(y = unemploy_pct, color = 'unemploy_pct')) +
+  ylab('psavert / unemploy_pct')
+g
+ggplotly(g)
+
+plot_ly(data = economics, type = 'scatter', mode = 'lines',
+        x = ~date, y = ~psavert, name = 'psavert') %>% 
+  add_trace(y = ~unemploy_pct, name = 'unemploy_pct')
+
+
+# dygraphs 패키지를 사용한 시계열 그래프
+# install.packages('dygraphs')
+library(xts)
+library(dygraphs)
+search()
