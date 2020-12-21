@@ -76,9 +76,36 @@ ggplot(data = welfare) +
            position = 'fill')
 
 # region별 income의 평균을 찾고, 시각화.
+income_by_region <- welfare %>% 
+  filter(!is.na(income)) %>% 
+  group_by(region) %>% 
+  summarize(mean_income = mean(income))
+
+income_by_region
+
+ggplot(data = income_by_region) +
+  geom_col(mapping = aes(x = mean_income, y = reorder(region, mean_income)))
 
 # region별 gender별 income의 평균을 찾고, 시각화.
+income_by_region_gender <- welfare %>% 
+  filter(!is.na(income)) %>% 
+  group_by(region, gender) %>% 
+  summarize(mean_income = mean(income))
+
+income_by_region_gender
+
+ggplot(data = income_by_region_gender) +
+  geom_col(mapping = aes(x = region, y = mean_income, fill = gender),
+           position = 'dodge')
 
 # region별 ages별 income의 평균을 찾고, 시각화.
+income_by_region_ages <- welfare %>% 
+  filter(!is.na(income)) %>% 
+  group_by(region, ages) %>% 
+  summarize(mean_income = mean(income))
 
+income_by_region_ages
 
+ggplot(data = income_by_region_ages) +
+  geom_col(mapping = aes(x = region, y = mean_income, fill = ages),
+           position = 'dodge')
