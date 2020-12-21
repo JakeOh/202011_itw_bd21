@@ -57,4 +57,16 @@ plot_ly(data = economics, type = 'scatter', mode = 'lines',
 
 # economics에 실업률(%) 파생 변수가 추가된 데이터 프레임 생성
 # 시간에 따른 실업률 시계열 그래프
+economics <- ggplot2::economics %>% 
+  mutate(unemploy_pct = (unemploy / pop) * 100)
+head(economics)
+tail(economics)
 
+g <- ggplot(data = economics,
+            mapping = aes(x = date, y = unemploy_pct)) +
+  geom_line()
+g
+ggplotly(g)
+
+plot_ly(data = economics, type = 'scatter', mode = 'lines',
+        x = ~date, y = ~unemploy_pct)
