@@ -89,3 +89,37 @@ plot_ly(data = economics, type = 'scatter', mode = 'lines',
 library(xts)
 library(dygraphs)
 search()
+
+# xts 객체 생성
+eco_psavert <- xts(x = economics$psavert,      # x = 시계열 데이터
+                   order.by = economics$date)  # order.by = 시간
+class(eco_psavert)  #> xts 타입
+str(eco_psavert)
+head(eco_psavert)
+
+# xts 객체를 dygraph 함수의 argument로 전달 -> 시계열 그래프
+psavert_graph <- dygraph(data = eco_psavert)
+psavert_graph
+
+# 시계열 그래프에 range selector를 추가
+dyRangeSelector(psavert_graph)
+
+# dygraphs 패키지를 이용해서 실업률 시계열 그래프
+eco_unemploy <- xts(x = economics$unemploy_pct, order.by = economics$date)
+head(eco_unemploy)
+tail(eco_unemploy)
+
+unemploy_graph <- dygraph(data = eco_unemploy)
+unemploy_graph
+dyRangeSelector(unemploy_graph)
+
+# dygraphs 패키지를 이용해서 개인저축률/실업률 시계열 그래프
+# 2개의 xts 객체(eco_psavert, eco_unemploy)를 1개로 합침.
+head(eco_psavert)
+head(eco_unemploy)
+
+psave_unempl_xts <- cbind(eco_psavert, eco_unemploy)
+head(psave_unempl_xts)
+tail(psave_unempl_xts)
+
+dygraph(psave_unempl_xts) %>% dyRangeSelector()
