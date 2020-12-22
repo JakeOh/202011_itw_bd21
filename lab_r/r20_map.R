@@ -89,3 +89,44 @@ ggplot(data = kormap_pop,
   geom_polygon(color = 'darkgray') +
   coord_quickmap() +
   scale_fill_continuous(low = 'white', high = 'darkorange')
+
+# ggChoropleth 함수 사용한 인구 데이터 시각화
+ggChoropleth(data = korpop1_df,  # 통계 데이터 프레임
+             map = kormap1,      # 지도 데이터 프레임
+             mapping = aes(fill = pop, map_id = code))
+
+# korpop2(인구 통계 데이터), kormap2(지도 데이터) 사용.
+# 서울의 구별 총 인구를 지도 위에 시각화.
+# 1) ggplot 직접 사용
+head(seoul_gu_map)
+str(seoul_gu_map)
+
+head(korpop2)
+str(changeCode(korpop2))
+seoul_pop <- korpop2 %>% 
+  changeCode() %>% 
+  rename(gu_name = 행정구역별_읍면동, population = 총인구_명) %>% 
+  filter(str_starts(code, '11')) %>% 
+  select(code, gu_name, population)
+
+seoul_pop
+str(seoul_pop)
+seoul_pop$population <- as.numeric(seoul_pop$population)
+
+seoul_map_pop <- left_join(seoul_gu_map, seoul_pop, by = 'code')
+head(seoul_map_pop)
+tail(seoul_map_pop)
+
+ggplot(data = seoul_map_pop,
+       mapping = aes(x = long, y = lat, group = group, fill = population)) +
+  geom_polygon(color = 'darkgray') +
+  coord_quickmap() +
+  scale_fill_continuous(low = 'white', high = 'darkorange')
+
+# 2) ggChoropleth 사용
+ggChoropleth(data = seoul_pop,
+             map = seoul_gu_map,
+             mapping = aes(fill = population, map_id = code))
+
+# 대한민국 최신 행정구역(SHP) 지도 데이터 다운로드
+# http://www.gisdeveloper.co.kr/?p=2332
