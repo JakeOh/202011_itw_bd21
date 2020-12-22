@@ -59,5 +59,43 @@ distinct(asia_map, region)
 
 ggplot(data = asia_map,
        mapping = aes(x = long, y = lat, group = group)) +
-  geom_polygon(color = 'black', fill = 'white') +
+  geom_polygon(mapping = aes(fill = region), color = 'black') +
   coord_map(projection = 'polyconic')
+
+
+# datasets::USArrests 데이터 셋 - 미국 범죄 통계 데이터
+# 미국 주(state) 지도 위에 범죄 통계 데이터를 시각화
+head(usa_state)  # 미국 주(state) 지도 데이터
+head(USArrests)  # 미국 주(state) 범죄 데이터
+str(USArrests)
+#> state 이름들이 컬럼에 있지 않고, row label(name)으로만 존재.
+#> 지도 데이터와 join하기 위해서는 
+# state 이름들을 컬럼(변수)로 변환할 필요가 있음.
+us_arrests <- rownames_to_column(USArrests, var = 'state')
+head(us_arrests)
+str(us_arrests)
+
+distinct(us_arrests, state)
+#> 50개 주 이름들(state 변수)의 첫글자가 대문자!
+
+distinct(usa_state, region)
+#> 하와이 제외한 49개 주 이름들은 모두 소문자!
+
+# us_arrests 데이터 프레임의 state 변수의 모든 값들을 소문자로 변환 후,
+# usa_state 지도 데이터 프레임과 join
+us_arrests$state <- tolower(us_arrests$state)
+head(us_arrests)
+
+# usa_state <== left_join == us_arrests
+state_arrests <- left_join(usa_state, us_arrests, 
+                           by = c('region' = 'state'))
+head(state_arrests)
+tail(state_arrests)
+
+# 미국 지도 위에 Murder 발생 건수를 색깔로 표현
+ggplot(data = state_arrests,
+       mapping = aes(x = long, y = lat, group = group, fill = Murder)) +
+  geom_polygon(color = 'black') +
+  coord_quickmap() +
+  scale_fill_continuous(low = 'white', high = 'red')
+
