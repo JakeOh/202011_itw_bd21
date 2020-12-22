@@ -26,3 +26,38 @@ str(usa)
 # order: 위도/경도 점들을 연결하는 순서.
 # region, subregion: 지역 이름
 
+# usa(미국 지도 데이터) 데이터 프레임 시각화
+ggplot(data = usa,
+       mapping = aes(x = long, y = lat, group = group)) +
+  geom_polygon(color = 'black', fill = 'white') +
+  coord_quickmap()
+
+ggplot(data = usa,
+       mapping = aes(x = long, y = lat, group = group)) +
+  geom_polygon(color = 'black', fill = 'white') +
+  coord_map(projection = 'polyconic')
+
+# maps 패키지의 state: 미국 주(state) 위치(위도/경도) 정보가 포함된 지도 데이터.
+usa_state <- map_data(map = 'state')
+head(usa_state)
+str(usa_state)
+distinct(usa_state, region)
+distinct(usa_state, subregion)
+
+ggplot(data = usa_state,
+       mapping = aes(x = long, y = lat, group = group)) +
+  geom_polygon(color = 'black', fill = 'white') +
+  coord_map(projection = 'polyconic')  # coord_quickmap()
+
+# maps 패키지의 world 맵: 세계 지도 데이터
+# 세계 지도 데이터 에서 관심있는 몇 개 지역만 선택 지도 그리기
+asia_map <- map_data(map = 'world',
+                     region = c('South Korea', 'North Korea',
+                                'China', 'Japan', 'India'))
+head(asia_map)
+distinct(asia_map, region)
+
+ggplot(data = asia_map,
+       mapping = aes(x = long, y = lat, group = group)) +
+  geom_polygon(color = 'black', fill = 'white') +
+  coord_map(projection = 'polyconic')
