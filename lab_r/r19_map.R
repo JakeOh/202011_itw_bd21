@@ -99,3 +99,24 @@ ggplot(data = state_arrests,
   coord_quickmap() +
   scale_fill_continuous(low = 'white', high = 'red')
 
+# 단계 구분도(choropleth plot):
+#   지도 위에 통계 값들을 색깔 단계로 구분해서 시각화한 그래프.
+#   인구, 질병, 범죄 통계, ...
+# ggiraphExtra 패키지: 단계 구분도를 간단히 그릴 수 있는 패키지
+# install.packages('ggiraphExtra')
+
+library(ggiraphExtra)
+search()
+
+ggChoropleth(data = us_arrests,
+             map = usa_state,
+             mapping = aes(map_id = state, fill = Murder),
+             interactive = TRUE)
+# ggChoropleth() 함수의 arguments:
+# data = 통계 데이터 프레임.
+#   지도 데이터의 region 컬럼과 join할 수 있는 컬럼이 있어야 함.
+# map = 지도 데이터 프레임.
+# mapping = aes(): 변수들의 값에 따라서 다르게 표현할 내용들.
+#   map_id = 지도 데이터 프레임(map)의 region과 join할 수 있는 통계 데이터 프레임(data)의 변수 이름.
+#   fill = 지도의 각 region을 채우는 색깔.
+# interactive: 인터랙티브 그래프를 만들지(TRUE), 만들지 않을지(FALSE)를 설정. 기본값은 FALSE.
