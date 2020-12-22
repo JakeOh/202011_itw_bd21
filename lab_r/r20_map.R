@@ -46,4 +46,46 @@ str(kormap3)
 # kormap2 지도 데이터 프레임을 사용. 서울 지도를 시각화.
 # sigungu_cd 변수(컬럼)의 값이 '11'로 시작하면 서울시의 구.
 # str_starts() 함수 사용.
+code <- c('1101', '1102', '1201', '1202')
+str_starts(code, '11')
+head(kormap2)
+# kormaps2에 서울 구 정보들로 이루어진 부분집합.
+seoul_gu_map <- filter(kormap2, str_starts(sigungu_cd, '11'))
+head(seoul_gu_map)
+tail(seoul_gu_map)
 
+ggplot(data = seoul_gu_map,
+       mapping = aes(x = long, y = lat, group = group)) +
+  geom_polygon(color = 'darkgray', fill = 'white') +
+  coord_quickmap()
+
+# 한국 지도(kormap1) 위에 인구 통계 데이터(korpop1) 시각화
+str(kormap1)
+str(korpop1)  
+#> invalid multibyte string 에러 발생
+#> 데이터 프레임의 컬럼 이름에 인코딩 타입이 다른 문자열이 포함되어 있기 때문.
+str(changeCode(korpop1))
+
+# kormap1과 korpop1를 join
+# kormap1$code, korpop1$code
+distinct(kormap1, code)
+distinct(korpop1, code)
+# korpop1 데이터 프레임에서 한글 컬럼 이름을 영어로 변경, 필요한 컬럼만 선택.
+korpop1_df <- korpop1 %>% 
+  changeCode() %>% 
+  rename(sido_name = 행정구역별_읍면동, pop = 총인구_명) %>% 
+  select(code, sido_name, pop)
+head(korpop1_df)
+korpop1_df$pop <- as.numeric(korpop1_df$pop)
+
+kormap_pop <- left_join(kormap1, korpop1_df, by = 'code')
+head(kormap_pop)
+tail(kormap_pop)
+str(kormap_pop)
+
+# 지도 & 총인구 데이터 시각화
+ggplot(data = kormap_pop,
+       mapping = aes(x = long, y = lat, group = group, fill = pop)) +
+  geom_polygon(color = 'darkgray') +
+  coord_quickmap() +
+  scale_fill_continuous(low = 'white', high = 'darkorange')
