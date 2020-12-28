@@ -1,0 +1,92 @@
+---
+title: "R Notebook"
+output:
+  html_document:
+    df_print: paged
+---
+
+# R Markdown
+R Markdown이란 R을 이용한 보고서 작성 기능
+
+## Section 1-1
+서브 섹션입니다...
+
+### Section 1-1-1
+서브 섹션입니다...
+
+## Section 1-2
+서브 섹션입니다...
+
+R Markdown 리스트
+----------
+* 아이템 1
+* 아이템 2
+  * 아이템 2-a
+  * 아이템 2-b
+    * 아이템 2-b-1
+    * 아이템 2-b-2
+* 아이템 3
+
+R Markdown 번호가 있는 리스트
+----------
+1. 번호 아이템 1
+1. 번호 아이템 2
+1. 번호 아이템 3
+
+R Markdown 번호가 있는 리스트 II
+----------
+1. 번호 아이템 1
+1. 번호 아이템 2
+1. 번호 아이템 3
+
+R Markdown 텍스트 서식
+----------
+*이탤릭체* 또는 _이탤릭체_ 입니다.
+R Markdown에서 줄바꿈을 넣고 싶으면 공백 두칸 입력 후 엔터.  
+**볼드체** 또는 __볼드체__ 입니다.  
+***이탤릭 볼드체*** 또는 ___이탤릭 볼드체___ 입니다.  
+`a <- c(1, 2, 3)`  
+
+R Markdown 링크
+----------
+https://www.google.com/  
+[구글](https://www.google.com/)
+
+R Markdown 코드 청크(code chunk)
+----------
+1. Toolbar의 Insert
+1. Ctrl+Alt+I
+
+```{r}
+# 주석(comment)
+ggplot2::mpg
+```
+
+```{r eval=FALSE}
+# eval=FALSE는 Rmd 파일을 변환할 때, 코드가 실행(evaluate)되는 것을 방지.
+ggplot2::mpg
+```
+
+```{r message=FALSE}
+# 각각의 코드 청크는 단일 작업으로 이루어져야 함.
+# 필요한 패키지는 청크마다 메모리에 로딩.
+library(tidyverse)
+# message=FALSE는 코드 청크가 실행될 때 콘솔창에 출력되는 메시지, 경고들을 보고서에 포함하지 않음.
+
+ggplot(data = mpg) +
+  geom_boxplot(mapping = aes(x = as.factor(cyl), y = hwy))
+```
+
+```{r echo=FALSE}
+# echo=FALSE는 코드 청크는 보고서에 포함하지 않고, 코드 실행 결과만 보고처에 첨부하는 경우에 사용.
+library(tidyverse)
+
+ggplot(data = mpg) +
+  geom_boxplot(mapping = aes(x = drv, y = hwy))
+```
+
+```{r}
+# knitr::kable() 함수를 사용한 데이터 프레임 출력
+knitr::kable(ggplot2::mpg,
+             caption = 'knitr::kable function')
+```
