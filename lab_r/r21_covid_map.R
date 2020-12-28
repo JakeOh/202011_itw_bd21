@@ -11,3 +11,21 @@
 
 # 대한민국의 시도별 코로나 바이러스 확진자수 데이터를 찾을 수 있으면,
 # 대한민국의 지도 위에 확진자수를 시각화해보세요.
+
+library(tidyverse)
+library(plotly)
+library(ggiraphExtra)
+search()
+
+# us-state.csv 파일을 다운로드 받을 수 있는 URL 주소
+us_state_url <- 'https://github.com/nytimes/covid-19-data/raw/master/us-states.csv'
+
+# utils::read.csv() 함수: data.frame 객체 생성
+# readr::read_csv() 함수: tibble 객체 생성
+# tibble: data.frame에 추가적인 속성들을 가지고 있는 클래스 객체
+
+# 웹 상에 있는 CSV 파일을 다운로드해서 데이터 프레임을 생성.
+us_covid <- read_csv(file = us_state_url)
+head(us_covid)
+tail(us_covid)
+str(us_covid)
