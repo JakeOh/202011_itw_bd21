@@ -1,0 +1,30 @@
+---
+title: "R Markdown Report"
+output:
+  pdf_document:
+    latex_engine: xelatex
+  html_document:
+    df_print: paged
+mainfont: Gulim
+---
+
+```{r setup, include=FALSE}
+# include=FALSE는 코드 청크는 실행하지만, 실행 결과를 보고서에 포함하지 않음.
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# R Markdown 파일(Rmd)을 PDF 파일로 변환
+
+1. 아래와 같이 tinytex 패키지를 설치한 후 install_tinytex() 함수를 호출해서 TinyTex 프로그램을 설치.
+```{r, eval=FALSE}
+install.packages('tinytex')
+tinytex::install_tinytex()
+```
+
+2. PDF 변환 엔진 설정과 한글 폰트 설정을 위해서 아래의 코드를 R Markdown 문서의 헤더에 추가.
+```
+output:
+  pdf_document:
+    latex_engine: xelatex
+mainfont: MalgunGothic
+```
