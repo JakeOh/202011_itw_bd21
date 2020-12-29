@@ -56,3 +56,52 @@ ggplot(data = iris) +
 
 ggplot(data = iris) +
   geom_boxplot(mapping = aes(x = Species, y = Petal.Width))
+
+# 3. -----
+# 데이터 셋(150개 관찰값)을 훈련 셋(training set)과 테스트 셋(test set)으로 분리.
+# 훈련 셋 : 테스트 셋 = 100 : 50
+# 데이터 프레임을 단순히 순서대로 100개, 50개 분리 -> 문제가 생김.
+# 데이터들이 섞여 있지 않기 때문에 virginica 품종은 훈련이 되지 않는 문제가 생김.
+# 데이터 셋을 분리하기 전에 무작위 섞어줘야 함.
+
+sample(10)
+# sample(n): 1 ~ n까지 정수를 무작위 순서 섞인 벡터를 반환.
+idx <- sample(10)
+idx
+idx[1:7]   # random하게 섞인 10개의 숫자들 중에서 앞에서 7개 선택
+idx[8:10]  # random하게 섞인 10개의 숫자들 중에서 뒤에서 3개 선택
+
+idx <- sample(150)
+idx
+
+train_set <- iris[idx[1:100], 1:4]
+head(train_set)
+
+train_label <- iris[idx[1:100], 5]
+head(train_label)
+
+test_set <- iris[idx[101:150], 1:4]
+head(test_set)
+
+test_label <- iris[idx[101:150], 5]
+head(test_label)
+
+# train_label의 품종별 빈도수
+table(train_label)
+
+# test_label의 품종별 빈도수
+table(test_label)
+
+# 4. -----
+# kNN 모델에 훈련 셋/레이블, 테스트 셋을 적용해서 테스트 셋의 예측값을 찾음.
+test_predicts <- knn(train = train_set,  # 훈련 셋
+                     test = test_set,    # 테스트 셋
+                     cl = train_label)   # 훈련 셋의 레이블
+#> 테스트 셋의 예측값을 반환.
+test_predicts
+
+# 테스트 셋의 실제값
+test_label
+
+# 예측값과 실제값을 비교 -> 평가(정확도 계산)
+
