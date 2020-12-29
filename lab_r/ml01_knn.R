@@ -96,7 +96,8 @@ table(test_label)
 # kNN 모델에 훈련 셋/레이블, 테스트 셋을 적용해서 테스트 셋의 예측값을 찾음.
 test_predicts <- knn(train = train_set,  # 훈련 셋
                      test = test_set,    # 테스트 셋
-                     cl = train_label)   # 훈련 셋의 레이블
+                     cl = train_label,   # 훈련 셋의 레이블
+                     k = 11)  # 가장 가까운 이웃을 몇개 사용
 #> 테스트 셋의 예측값을 반환.
 test_predicts
 
@@ -104,4 +105,30 @@ test_predicts
 test_label
 
 # 예측값과 실제값을 비교 -> 평가(정확도 계산)
+test_predicts == test_label
+sum(test_predicts == test_label)  #> 예측이 맞은 개수
+# logical 값들 합: TRUE는 1, FALSE는 0으로 계산됨.
+mean(test_predicts == test_label)  #> mean = sum / 전체개수: 정확도(accuracy)
 
+# 예측값과 실젝값이 다른 인덱스(위치)
+wrong_idx <- which(test_predicts != test_label)
+wrong_idx
+test_label[wrong_idx]  # 실제값: virginica
+test_predicts[wrong_idx]  # 예측값: versicolor
+
+# Confusion Matrix(혼동/오차 행렬)
+CrossTable(x = test_label,     # x = 실제값
+           y = test_predicts)  # y = 예측값
+
+# 예측 결과 시각화
+ggplot(data = test_set) +
+  geom_point(mapping = aes(x = Petal.Width, y = Petal.Length, color = test_label)) +
+  geom_point(data = test_set[wrong_idx, ],
+             mapping = aes(x = Petal.Width, y = Petal.Length),
+             shape = 'x', size = 5, color = 'red')
+
+ggplot(data = train_set) +
+  geom_point(mapping = aes(x = Petal.Width, y = Petal.Length, color = train_label)) +
+  geom_point(data = test_set[wrong_idx, ],
+             mapping = aes(x = Petal.Width, y = Petal.Length),
+             shape = 'x', size = 5, color = 'red')
