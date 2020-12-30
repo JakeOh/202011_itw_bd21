@@ -85,12 +85,36 @@ fp <- 2
 fn <- 4
 tp <- 40
 
-# 분류의 성능 지표(metrics)
-# 1) 정확도(accuracy): 전체 샘플들 중에서 정확하게 예측한 비율
+# 분류(classification)의 성능 지표(metrics)
+# 1) 정확도(accuracy): 전체 샘플들 중에서 정확하게 예측(TP, TN)한 비율
 # accuracry = (TN + TP) / (TN + FP + FN + TP)
 (tn + tp) / (tn + fp + fn + tp)
 
-# 2) 
+# 2) 정밀도(precision): 양성(positive) 예측들 중에서 정답의 비율
+# precision = TP / (FP + TP)
+precision <- tp / (fp + tp)
+precision
 
+# 3) 재현율(recall): 실제 양성(positive) 샘플들 중에서 정답의 비율
+# recall = TP / (FN + TP)
+# 재현율 = 민감도(sensitivity) = TPR(True Positive Rate, 진짜 양성 비율)
+recall <- tp / (fn + tp)
+recall
 
+# 4) F1-score: 정밀도와 재현율의 조화 평균(역수들의 평균의 역수)
+# f1 = 1 / ((1/precision + 1/recall) / 2) = 2 / (1/precision + 1/ recall)
+f1 = 2 / (1/precision + 1/recall)
+f1
 
+# 정밀도/재현율 트레이드오프(precision/recall trade-off)
+# 정밀도가 좋아지면 재현율이 나빠짐. 반대로, 재현율이 좋아지면 정밀도 나빠짐.
+
+# k = 5, 11, 21일 때 결과 비교
+predicts <- knn(train = train_set,
+                test = test_set,
+                cl = train_label,
+                k = 11)
+mean(predicts == test_label)
+CrossTable(x = test_label, y = predicts, prop.chisq = FALSE)
+
+# 5. 
