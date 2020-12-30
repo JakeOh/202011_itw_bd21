@@ -117,4 +117,44 @@ predicts <- knn(train = train_set,
 mean(predicts == test_label)
 CrossTable(x = test_label, y = predicts, prop.chisq = FALSE)
 
-# 5. 
+# 5. 모델 향상 -----
+# 1) 변수 정규화(normalization)
+normalize <- function(x) {
+  return((x - min(x)) / (max(x) - min(x)))
+}
+
+# 데이터 셋 정규화
+normalized_bc_data <- data.frame(lapply(bc_data, normalize))
+summary(normalized_bc_data)
+
+# 데이터 셋을 훈련/테스트 셋으로 분리
+train_normalized <- normalized_bc_data[1:tr_size, ]
+test_normalized <- normalized_bc_data[(tr_size + 1):569, ]
+
+predicts <- knn(train = train_normalized,
+                test = test_normalized,
+                cl = train_label,
+                k = 5)
+mean(predicts == test_label)
+CrossTable(x = test_label, y = predicts, prop.chisq = FALSE)
+
+# 2) 변수 표준화(standardization)
+standardize <- function(x) {
+  return((x - mean(x)) / sd(x))
+}
+
+# 데이터 셋 표준화
+standardized_bc_data <- data.frame(lapply(bc_data, standardize))
+summary(standardized_bc_data)
+
+# 표준화된 데이터 셋을 훈련/테스트 셋으로 분리
+train_standardized <- standardized_bc_data[1:tr_size, ]
+test_standardized <- standardized_bc_data[(tr_size + 1):569, ]
+
+# knn 적용
+predicts <- knn(train = train_standardized,
+                test = test_standardized,
+                cl = train_label,
+                k = 5)
+mean(predicts == test_label)
+CrossTable(x = test_label, y = predicts, prop.chisq = FALSE)
