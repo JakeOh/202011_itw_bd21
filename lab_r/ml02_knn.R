@@ -16,7 +16,7 @@ tail(wisc_bc)
 str(wisc_bc)
 summary(wisc_bc)
 
-# 2. 데이터 전처리(가공) ---
+# 2. 데이터 전처리(가공) -----
 # id 변수: 환자 아이디 -> 데이터 프레임에서 제거
 # diagnosis 변수: 암인지 아닌지가 진단된 데이터 - 관심 변수(레이블)
 # knn() 함수에서 cl 파라미터에 전달하는 레이블은 factor 타입이어야 함.
@@ -37,6 +37,8 @@ bc_data <- wisc_bc[, 3:32]  #> 데이터
 bc_label <- wisc_bc[, 2]  #> 레이블
 
 # 데이터 셋(데이터 & 레이블)을 훈련 셋과 테스트 셋으로 분리(8:2)
+# wisc_bc 데이터 셋은 B(Benign)과 M(Malignant)이 랜덤하게 섞여 있는 상태이기 때문에,
+# sample() 함수를 이용하지 않고, 순서대로 분리해도 괜찮다.
 tr_size <- round(569 * 0.8)  # 훈련 셋의 observation 개수
 
 train_set <- bc_data[1:tr_size, ]  #> 455 x 30 데이터 프레임
@@ -50,3 +52,45 @@ prop.table(table(train_label))
 
 table(test_label)
 prop.table(table(test_label))
+
+# 3. knn 알고리즘 적용 -----
+# knn() 함수 사용해서 테스트 셋의 예측값 찾음.
+predicts <- knn(train = train_set,
+               test = test_set,
+               cl = train_label,
+               k = 1)
+
+# 4. knn 성능 평가 -----
+# 정확도 계산
+mean(predicts == test_label)
+wrong_idx <- which(predicts != test_label)
+test_label[wrong_idx]
+predicts[wrong_idx]
+
+# 오차 행렬(Confusion Matrix) 생성
+CrossTable(x = test_label, y = predicts, prop.chisq = FALSE)
+#          | 예측값              |
+# 실제값   | Negative | Positive |
+# ---------+----------+----------+
+# Negative |    TN    |    FP    |
+# ---------+----------+----------+
+# Positive |    FN    |    TP    |
+# ---------+----------+----------+
+# TN(True Negative, 진짜 음성): 실제 음성을 음성으로 예측.
+# FP(False Positive, 가짜 양성): 실제로는 음성인데 양성으로 잘못 예측.
+# FN(False Negative, 가짜 음성): 실제로는 양성인데 음성으로 잘못 예측.
+# TP(True Positive, 진짜 양성): 실제 양성을 양성으로 예측.
+tn <- 68
+fp <- 2
+fn <- 4
+tp <- 40
+
+# 분류의 성능 지표(metrics)
+# 1) 정확도(accuracy): 전체 샘플들 중에서 정확하게 예측한 비율
+# accuracry = (TN + TP) / (TN + FP + FN + TP)
+(tn + tp) / (tn + fp + fn + tp)
+
+# 2) 
+
+
+
