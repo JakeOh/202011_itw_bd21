@@ -142,3 +142,53 @@ ggplot(data = train_set) +
 # 표준화:
 #   변수의 평균이 0, 표준편차가 1이 되도록 스케일링.
 summary(iris)
+
+v1 <- seq(1, 5)
+v1
+min_v1 <- min(v1)
+min_v1
+max_v1 <- max(v1)
+max_v1
+v1_normalized <- (v1 - min_v1) / (max_v1 - min_v1)
+v1_normalized
+
+v1_normalized <- (v1 - min(v1)) / (max(v1) - min(v1))
+v1_normalized
+
+v2 <- seq(10, 50, 10)
+v2
+v2_normalized <- (v2 - min(v2)) / (max(v2) - min(v2))
+v2_normalized
+
+# 함수 정의(definition)/선언(declaration)
+# 함수이름 <- function(파라미터 선언) {함수 기능 작성}
+min_max_normalize <- function(x) {
+  return((x - min(x)) / (max(x) - min(x)))
+}
+
+# 함수는 호출(call)해야(불러줘야) 기능이 수행됨.
+min_max_normalize(v1)
+min_max_normalize(v2)
+
+df <- data.frame(width = v1, length = v2)
+df
+summary(df)
+
+# lapply(데이터 프레임, 함수이름):
+#   데이터 프레임의 변수들을 하나씩 함수의 argument로 전달.
+#   함수의 리턴값들을 list로 묶어서 리턴(반환).
+df_normalized <- lapply(df, min_max_normalize)
+df_normalized  #> 리스트(List)
+df_normalized <- data.frame(df_normalized)
+df_normalized  #> 데이터 프레임(data.frame)
+
+# min_max_normalize 함수는 숫자 타입 변수만 arugment로 전달받을 수 있기 때문에,
+# iris 데이터 프레임에서 숫자 타입 변수들과 레이블을 분리.
+iris_data <- iris[, 1:4]
+head(iris_data)
+iris_label <- iris[, 5]
+head(iris_label)
+
+iris_data_norm <- data.frame(lapply(iris_data, min_max_normalize))
+summary(iris_data_norm)
+head(iris_data_norm)
