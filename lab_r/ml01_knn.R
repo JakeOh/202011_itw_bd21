@@ -132,3 +132,13 @@ ggplot(data = train_set) +
   geom_point(data = test_set[wrong_idx, ],
              mapping = aes(x = Petal.Width, y = Petal.Length),
              shape = 'x', size = 5, color = 'red')
+
+# 5. -----
+# 특성 스케일링(feature scaling): 정규화(normalization), 표준화(standardization)
+# 변수(특성)들마다 단위, 크기가 달라서, 거리를 계산할 때 미치는 영향이 다를 수 있음.
+# 모든 변수(특성)들이 거리 계산을 할 때 비슷한 영향을 미칠 수 있도록 스케일을 변환.
+# 정규화: 
+#   변수의 최솟값을 0, 최댓값을 1로 변환. 모든 값들이 0 ~ 1 범위가 되도록 스케일링.
+# 표준화:
+#   변수의 평균이 0, 표준편차가 1이 되도록 스케일링.
+summary(iris)
