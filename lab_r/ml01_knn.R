@@ -192,3 +192,58 @@ head(iris_label)
 iris_data_norm <- data.frame(lapply(iris_data, min_max_normalize))
 summary(iris_data_norm)
 head(iris_data_norm)
+
+# 정규화된 데이터 프레임을 훈련 셋/테스트 셋으로 분리
+idx  # 1 ~ 150 정수들이 랜덤하게 섞여있는 벡터
+
+# 훈련 셋, 훈련 레이블
+normalized_train_set <- iris_data_norm[idx[1:100], ]
+train_label <- iris_label[idx[1:100]]
+
+# 테스트 셋, 테스트 레이블
+normalized_test_set <- iris_data_norm[idx[101:150], ]
+test_label <- iris_label[idx[101:150]]
+
+# kNN 알고리즘 적용 -> 테스트 셋의 예측값
+predicts <- knn(train = normalized_train_set,
+                test = normalized_test_set,
+                cl = train_label,
+                k = 11)
+
+predicts == test_label
+mean(predicts == test_label)  # 정확도(accuracy)
+CrossTable(x = test_label, y = predicts)
+
+# 표준화(standardization)
+standardize <- function(x) {
+  # 변수 x의 평균을 0, 표준편차를 1로 변환하는 스케일링 방법.
+  return((x - mean(x)) / sd(x))
+}
+
+v1
+mean(v1)
+sd(v1)
+v1_stand <- standardize(v1)
+v1_stand
+mean(v1_stand)
+sd(v1_stand)
+
+# standardize 함수를 iris 데이터 프레임에 적용
+summary(iris_data)
+iris_data_stand <- data.frame(lapply(iris_data, standardize))
+summary(iris_data_stand)
+sd(iris_data_stand$Sepal.Length)
+
+# 표준화를 적용한 데이터 프레임을 훈련/테스트 셋으로 분리
+stand_train_set <- iris_data_stand[idx[1:100], ]
+stand_test_set <- iris_data_stand[idx[101:150], ]
+
+# knn 적용 -> 예측값
+predicts <- knn(train = stand_train_set,
+                test = stand_test_set,
+                cl = train_label,
+                k = 11)
+# 정확도
+mean(predicts == test_label)
+# 오차 행렬
+CrossTable(x = test_label, y = predicts)
