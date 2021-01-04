@@ -7,6 +7,7 @@
 
 library(tidyverse)
 library(C50)
+library(gmodels)
 search()
 
 
@@ -29,3 +30,38 @@ ggplot(data = iris) +
   geom_vline(xintercept = 1.7, linetype = 'dashed')  # 수직선(vertical line)
   # xintercept: x 절편, yintercept: y 절편
 
+# iris 데이터프레임을 데이터/레이블 분리.
+iris_data <- iris[, 1:4]
+head(iris_data)
+iris_label <- iris[, 5]
+head(iris_label)
+
+# 데이터/레이블을 훈련/테스트 셋으로 분리.
+# 데이터프레임을 랜덤하게 섞어서 훈련/테스트 셋으로 분리해야 함.
+set.seed(1)  # 난수(random number)를 만드는 순서를 고정.
+idx <- sample(150)
+idx
+
+# 훈련:테스트 = 8:2 = 120:30
+train_idx <- idx[1:120]
+test_idx <- idx[121:150]
+
+# 훈련 셋, 훈련 레이블
+train_set <- iris_data[train_idx, ]
+train_label <- iris_label[train_idx]
+
+# 테스트 셋, 테스트 레이블
+test_set <- iris_data[test_idx, ]
+test_label <- iris_label[test_idx]
+
+# 훈련/테스트 셋이 편향되지 않았는지 체크.
+table(train_label)
+prop.table(table(train_label))
+prop.table(table(test_label))
+
+# 3. 머신 러닝 모델(알고리즘) 적용, 평가 -----
+# 의사 결정 나무 머신 러닝 모델을 훈련(학습)시킴.
+tree <- C5.0(x = train_set,    # x = 훈련 셋(데이터 프레임)
+             y = train_label)  # y = 훈련 레이블(factor 벡터)
+tree
+summary(tree)
