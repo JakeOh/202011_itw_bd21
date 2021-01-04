@@ -75,3 +75,6 @@ test_predict <- predict(tree, test_set)
 mean(test_label == test_predict)  #> 테스트 셋의 정확도: 67%
 CrossTable(x = test_label, y = test_predict, prop.chisq = FALSE)
 
+# 과적합(overfitting):
+# 머신 러닝 알고리즘(모델)이 훈련 셋은 잘 설명하지만, 
+# 테스트 셋을 잘 설명하지 못하는 경우.
