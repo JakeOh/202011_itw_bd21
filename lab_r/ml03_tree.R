@@ -65,3 +65,33 @@ tree <- C5.0(x = train_set,    # x = 훈련 셋(데이터 프레임)
              y = train_label)  # y = 훈련 레이블(factor 벡터)
 tree
 summary(tree)
+
+# C5.0 decision tree 시각화
+plot(tree)
+
+# 학습 셋의 정확도
+train_predict <- predict(tree, train_set)
+train_predict  # 의사결정나무가 예측한 학습 셋의 예측값
+train_label  # 학습 셋의 실젯값.
+
+mean(train_label == train_predict)  
+#> 훈련 셋의 정확도(accuracy) = 97.5%
+
+CrossTable(x = train_label,  y = train_predict, prop.chisq = FALSE)
+#> 오차 행렬 - summary(tree)의 내용과 동일
+
+# 테스트 셋으로 decision tree 알고리즘 평가
+# 테스트 셋의 예측값
+test_predict <- predict(tree, test_set)
+# 테스트 셋의 정확도
+mean(test_label == test_predict)  #> 96.7%
+
+# 테스트 셋에서 예측이 틀린 샘플(들)
+wrong_idx <- which(test_label != test_predict)
+wrong_idx
+test_set[wrong_idx, ]
+test_predict[wrong_idx]  #> 예측: versicolor
+test_label[wrong_idx]  #> 실제: virginica
+
+# 테스트 셋의 오차 행렬
+CrossTable(x = test_label, y = test_predict, prop.chisq = FALSE)
