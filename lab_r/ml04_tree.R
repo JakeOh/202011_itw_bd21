@@ -8,7 +8,9 @@ search()
 
 # 1. 데이터 준비 -----
 # 독일 은행 대출 상환 정보
-credit_df <- read.csv(file = 'data/credit.csv', encoding = 'UTF-8')
+credit_df <- read.csv(file = 'data/credit.csv', encoding = 'UTF-8',
+                      stringsAsFactors = TRUE)
+# stringsAsFactors = TRUE: 문자열 타입의 모든 컬럼을 factor 변수로 변환해서 데이터프레임을 생성.
 str(credit_df)
 head(credit_df)
 
@@ -47,12 +49,29 @@ ggplot(data = credit_df) +
 
 # 3. 의사결정 나무 알고리즘 훈련 -----
 # 훈련 셋(9):테스트 셋(1) 분리. 훈련/테스트 레이블 분리.
+train_set <- credit_df[1:900, 1:16]
+head(train_set)
+train_label <- credit_df[1:900, 17]
+table(train_label)
+prop.table(table(train_label))
+
+test_set <- credit_df[901:1000, 1:16]
+test_label <- credit_df[901:1000, 17]
+prop.table(table(test_label))
 
 # C5.0() 함수 의사결정 나무를 생성
+tree <- C5.0(x = train_set, y = train_label)
+summary(tree)
+plot(tree, subtree = 21)
 
 # 훈련 셋의 정확도, 오차 행렬
-
+train_predict <- predict(tree, train_set)
+mean(train_label == train_predict)  #> 학습셋 정확도 = 87.6%
+CrossTable(x = train_label, y = train_predict, prop.chisq = FALSE)
 
 # 4. 의사결정 나무 알고리즘 평가 -----
 # 테스트 셋의 정확도, 오차 행렬
+test_predict <- predict(tree, test_set)
+mean(test_label == test_predict)  #> 테스트 셋의 정확도: 67%
+CrossTable(x = test_label, y = test_predict, prop.chisq = FALSE)
 
