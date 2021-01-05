@@ -13,6 +13,7 @@ credit_df <- read.csv(file = 'data/credit.csv', encoding = 'UTF-8',
 # stringsAsFactors = TRUE: 문자열 타입의 모든 컬럼을 factor 변수로 변환해서 데이터프레임을 생성.
 str(credit_df)
 head(credit_df)
+summary(credit_df)
 
 # 목적: default(채무 불이행, 파산) 여부 예측.
 # default = yes: 채무 불이행, 파산.
@@ -62,7 +63,7 @@ prop.table(table(test_label))
 # C5.0() 함수 의사결정 나무를 생성
 tree <- C5.0(x = train_set, y = train_label)
 summary(tree)
-plot(tree, subtree = 21)
+plot(tree, subtree = 10)  # node 10부터 시작하는 subtree
 
 # 훈련 셋의 정확도, 오차 행렬
 train_predict <- predict(tree, train_set)
