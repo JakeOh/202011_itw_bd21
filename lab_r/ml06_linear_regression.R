@@ -57,3 +57,29 @@ var(heights_df$father)  #> 아버지 키의 분산 = 48.61361
 father_std <- sqrt(father_variance)
 sd(heights_df$father)
 
+# 두 변수 x, y의 공분산: 
+# Covariance(x, y) = sum((x_i - x_bar)*(y_i - y_bar)) / (N - 1)
+# father, son의 공분산
+son_bar <- mean(heights_df$son)  # son의 평균
+covariance <- sum((heights_df$father - father_bar) * (heights_df$son - son_bar)) / (N-1)
+cov(x = heights_df$father, y = heights_df$son)  #> 24.98318
+
+# R 통계 함수: mean(평균), var(분산), sd(표준편차), cov(공분산)
+
+# OLS(Ordinary Least Squares):
+# 선형 회귀식 y = a + b*x에서 변수 x의 기울기 b는 다음과 같이 계산됨.
+# b = cov(x, y) / var(x)
+b <- cov(heights_df$father, heights_df$son) / var(heights_df$father)
+
+# 선형 회귀식 y = a + b*x로 만들어지는 직선은 두 변수 x, y의 평균을 지남.
+# y_bar = a + b * x_bar
+# a = y_bar - b * x_bar
+a <- mean(heights_df$son) - b * mean(heights_df$father)
+
+# lm() 함수: 선형 회귀식의 계수들(y절편, 기울기)을 찾아주는 함수.
+lin_reg <- lm(formula = son ~ father, data = heights_df)
+lin_reg
+lin_reg$coefficients #> intercept(절편), 기울기
+lin_reg$coefficients[1]  #> y절편(y-intercept)
+lin_reg$coefficients[2]  #> 변수 father의 기울기
+
