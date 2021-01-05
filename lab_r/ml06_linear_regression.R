@@ -83,3 +83,32 @@ lin_reg$coefficients #> intercept(절편), 기울기
 lin_reg$coefficients[1]  #> y절편(y-intercept)
 lin_reg$coefficients[2]  #> 변수 father의 기울기
 
+ggplot(data = heights_df, mapping = aes(x = father, y = son)) +
+  geom_point(alpha = 0.2) +
+  geom_smooth(method = 'lm') +
+  geom_vline(xintercept = mean(heights_df$father), 
+             color = 'darkgreen', size = 1, linetype = 'dashed') +
+  geom_hline(yintercept = mean(heights_df$son),
+             color = 'darkgreen', size = 1, linetype = 'dashed') +
+  geom_abline(slope = b, intercept = a, 
+              color = 'red', size = 1.5, linetype = 'dotted')
+
+# 선형 회귀 방정식 y_hat = a + b * x의 예측값은 오차들의 제곱의 합을 최소화.
+y <- heights_df$son  # 아들 키 - 종속 변수
+x <- heights_df$father  # 아버지 키 - 독립 변수
+# 선형 모델(lm)에서 예측한 아들 키
+y_hat <- a + b * x
+# 오차(=실제값-예측값)들의 제곱의 합계
+sum((y - y_hat) ^ 2)  #> 41242.11
+
+# lm 모형과 다른 모형
+y_hat2 <- 85 + 0.6 * x
+sum((y - y_hat2) ^ 2)  #> 243898
+
+# 회귀(regression: 수치 예측)의 성능 지표:
+# MSE(Mean Square Errors): 오차들의 제곱의 평균
+# RMSE(Root Mean Square Errors): 오차들의 제곱의 평균의 제곱근
+
+# lm에서 MSE
+mse_son <- mean((y - y_hat) ^ 2)  #> 38.25799
+rmse_son <- sqrt(mse_son)  #> 6.1853
