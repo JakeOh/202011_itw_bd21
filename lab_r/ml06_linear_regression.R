@@ -44,15 +44,14 @@ ggplot(data = heights_df, mapping = aes(x = father, y = son)) +
 
 # N: 변수 x의 개수.
 # x_bar: 변수 x의 평균. x_bar = sum(x_i) / N
-# 분산(variance): 데이터가 평균으로부터 떨어져 있는 정도 표현하는 값
-# variance = sum((x_i - x_bar) ^ 2) / (N - 1)
-var(heights_df$father)  #> 아버지 키의 분산 = 48.61361
-
 N <- 1078
 father_bar <- sum(heights_df$father) / N
 mean(heights_df$father)
 
+# 분산(variance): 데이터가 평균으로부터 떨어져 있는 정도 표현하는 값
+# variance = sum((x_i - x_bar) ^ 2) / (N - 1)
 father_variance <- sum((heights_df$father - father_bar) ^ 2) / (N - 1)
+var(heights_df$father)  #> 아버지 키의 분산 = 48.61361
 
 # 표준편차(standard deviation) = sqrt(variance)
 father_std <- sqrt(father_variance)
