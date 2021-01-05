@@ -35,4 +35,26 @@ ggplot(data = heights_df, mapping = aes(x = father, y = son)) +
 #   선형 회귀(linear regression)
 #   y(종속변수) ~ x(독립변수)의 "선형(linear) 관계"를 찾는 것.
 #   y = a + b * x 관계식에서 y절편 a와 x의 기울기 b를 찾는 것.
+# 선형 회귀의 목적:
+#   실제 데이터: (x_i, y_i)
+#   예측 데이터: (x_i, y_hat_i), y_hat_i = a + b * x_i
+#   오차(error) = 실제값 - 예측값: e_i = y_i - y_hat_i
+#   오차들의 제곱의 합을 최소화하는 절편 a와 기울기 b를 찾는 것.
+#   sum(e_i ^ 2)을 최소화.
+
+# N: 변수 x의 개수.
+# x_bar: 변수 x의 평균. x_bar = sum(x_i) / N
+# 분산(variance): 데이터가 평균으로부터 떨어져 있는 정도 표현하는 값
+# variance = sum((x_i - x_bar) ^ 2) / (N - 1)
+var(heights_df$father)  #> 아버지 키의 분산 = 48.61361
+
+N <- 1078
+father_bar <- sum(heights_df$father) / N
+mean(heights_df$father)
+
+father_variance <- sum((heights_df$father - father_bar) ^ 2) / (N - 1)
+
+# 표준편차(standard deviation) = sqrt(variance)
+father_std <- sqrt(father_variance)
+sd(heights_df$father)
 
