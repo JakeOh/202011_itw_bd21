@@ -79,3 +79,53 @@ CrossTable(x = test_label, y = test_predict, prop.chisq = FALSE)
 # 과적합(overfitting):
 # 머신 러닝 알고리즘(모델)이 훈련 셋은 잘 설명하지만, 
 # 테스트 셋을 잘 설명하지 못하는 경우.
+
+
+## 5. 의사결정 나무 알고리즘 성능 개선 -----
+# 1) decision tree를 여러개를 만들어서, 다수결로 결정을 하는 방식
+tree2 <- C5.0(x = train_set, y = train_label, trials = 10)
+tree2
+summary(tree2)
+
+# 훈련 셋의 예측
+train_predict2 <- predict(tree2, train_set)
+
+# 훈련 셋의 정확도
+mean(train_label == train_predict2)  #> 96.3%
+CrossTable(x = train_label, y = train_predict2, prop.chisq = FALSE)
+
+# 테스트 셋 예측
+test_predict2 <- predict(tree2, test_set)
+# 테스트 셋 정확도
+mean(test_label == test_predict2)  #> 67%
+
+#> tree2은 tree1보다 훈련 셋에 더 많이 overfitting
+
+# 2) 오류(error)에 대한 비용(손실, cost)의 가중치를 설정해서,
+# 비용(손실)이 큰 오류가 작아지도록 tree를 만드는 방법.
+# default(파산) 여부인 경우에는 FP보다 FN가 비용(손실) 더 큰 오류.
+# -> FN의 개수가 줄어들도록 tree를 만듦.
+
+# matrix(행렬)의 행과 열의 이름을 지정하기 위해서
+cost_dim_names <- list(predict = c('no', 'yes'),  # 행(row)의 이름
+                       actual = c('no', 'yes'))   # 열(column)의 이름
+cost_dim_names
+
+# 비용 행렬: 예측은 행(row), 실제는 열(column)으로 설정.
+# 오차 행렬: 실제값을 행(row), 예측값을 열(column)으로 보여줌.
+cost_matrix <- matrix(data = c(0, 1, 2, 0),
+                      nrow = 2,
+                      dimnames = cost_dim_names)
+cost_matrix
+
+# 비용(손실)을 고려한 의사결정 나무
+tree3 <- C5.0(x = train_set, y = train_label, costs = cost_matrix)
+
+train_predict3 <- predict(tree3, train_set)  # 훈련 셋 예측값
+mean(train_label == train_predict3)  #> 훈련 셋 정확도: 83%
+CrossTable(x = train_label, y = train_predict3, prop.chisq = FALSE)
+#> FP가 늘어나고, FN이 줄어듦.
+
+test_predict3 <- predict(tree3, test_set)  # 테스트 셋 예측값
+mean(test_label == test_predict3)  #> 테스트 셋 정확도: 59%
+CrossTable(x = test_label, y = test_predict3, prop.chisq = FALSE)
