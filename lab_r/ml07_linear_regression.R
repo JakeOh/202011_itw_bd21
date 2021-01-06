@@ -19,7 +19,7 @@ str(insurance)
 # bmi(body mass index) = 몸무게/키^2 (kg/m^2)
 # expenses: 의료비 지출 - 관심(종속) 변수.
 # expenses ~ age + sex + bmi + children + smoker + region
-# expenses = b0 + b1 * age + b2 * sex + b3 * children + b4 * smoker + b5 * region
+# expenses = b0 + b1 * age + b2 * sex + b3 * bmi + b4 * children + b5 * smoker + b6 * region
 # 선형 회귀를 할 수 없는 문제점:
 #   sex, smoker, region 변수들은 문자열(character) 타입이어서 산술연산을 할 수 없음.
 #   문자열 타입을 Factor 타입으로 변환해야 함!
