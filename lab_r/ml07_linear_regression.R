@@ -135,11 +135,30 @@ rmse(modelObject = lin_reg1)
 # lm 모델 객체의 summary
 summary(lin_reg1)
 #> call: 모델 함수. 선형회귀식. 데이터 프레임.
-#> residuals: 모델에서 계산된 residual들의 기술 통계량.
+#> residuals: 모델에서 계산된 residual(= 실제값 - 예측값)들의 기술 통계량.
 #> coefficients: 모델이 찾은 선형회귀식의 계수들과 유의 수준(significant levels)
 #> residual standard error: 오차(residauls) 제곱 평균의 제곱근(RMSE)
 #> Multiple R^2, Adjusted R^2: 모델이 훈련 셋을 얼마나 잘 설명하는 지를 측정한 값.
 
+# RMSE: residual -> residual ^ 2 -> 평균 -> 제곱근
+# residual standard error와 RMSE가 약간 차이가 나는 이유는 
+# 평균을 계산할 때 샘플의 개수로 나누는 지 또는 자유도로 나누는 지의 차이때문.
+# 자유도(degree of freedom) = 샘플 개수 - coefficients 개수
+sqrt(sum(lin_reg1$residuals ^ 2) / 1070)  # rmse() 함수가 계산하는 방법
+sqrt(sum(lin_reg1$residuals ^ 2) / 1061)  # summary() 함수가 계산하는 방법
 
+# 4. 모델 평가 -----
+# 테스트 셋의 예측값, 평가 지표 계산
+test_predicts <- predict(object = lin_reg1,   # object = 훈련된 모델
+                         newdata = test_set)  # newdata = 테스트 셋
+# 테스트 셋에서의 RMSE
+rmse(actual = test_set$expenses, predicted = test_predicts)  #> 6096.883
+# 훈련 셋의 RMSE보다 테스트 셋의 RMSE 더 커지는 경우가 일반적임.
+# 의료비 예측 문제에서는, 훈련 셋과 테스트 셋의 RMSE 차이가 크지 않음.
+# -> 과적합(overfitting)이 크지 않음.
 
+# 5. 모델 변경, 평가 -----
+# 1) expenses ~ age + sex + bmi + smoker
+
+# 2) expenses ~ age^2 + sex + bmi + smoker
 
