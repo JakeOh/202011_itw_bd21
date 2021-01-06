@@ -25,5 +25,37 @@ str(insurance)
 #   문자열 타입을 Factor 타입으로 변환해야 함!
 #   lm() 함수가 Factor 타입 변수들을 숫자(0, 1, 2, ...)로 변환해서 회귀식을 찾아줌!
 
+
+# 2. 데이터 탐색 -----
 summary(insurance)  #> 기술 통계량(descriptive statistics)
+
+# age(나이) 분포 시각화 - histogram, boxplot
+ggplot(data = insurance, mapping = aes(y = age)) +
+  geom_boxplot()
+ggplot(data = insurance, mapping = aes(x = age)) +
+  geom_histogram(bins = 6, color = 'black', fill = 'lightgray')
+
+# bmi 분포 시각화
+ggplot(data = insurance, mapping = aes(y = bmi)) +
+  geom_boxplot()
+ggplot(data = insurance, mapping = aes(x = bmi)) +
+  geom_histogram(bins = 10, color = 'black', fill = 'lightgray')
+
+# expenses(의료비 지출) 분포 시각화
+ggplot(data = insurance, mapping = aes(y = expenses)) +
+  geom_boxplot()
+ggplot(data = insurance, mapping = aes(x = expenses)) +
+  geom_histogram(bins = 15, color = 'black', fill = 'lightgray')
+
+# expenses ~ age scatter matrix
+ggplot(data = insurance, mapping = aes(x = age, y = expenses)) + 
+  geom_point()
+
+# expenses ~ bmi scatter matrix
+ggplot(data = insurance, mapping = aes(x = bmi, y = expenses)) +
+  geom_point()
+
+# graphics::pairs() 함수: 산포도 행렬(scatter plot matrix)
+pairs(insurance[c('age', 'bmi', 'children', 'expenses')])
+pairs(insurance)
 
