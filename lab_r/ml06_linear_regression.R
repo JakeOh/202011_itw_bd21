@@ -108,7 +108,24 @@ sum((y - y_hat2) ^ 2)  #> 243898
 # 회귀(regression: 수치 예측)의 성능 지표:
 # MSE(Mean Square Errors): 오차들의 제곱의 평균
 # RMSE(Root Mean Square Errors): 오차들의 제곱의 평균의 제곱근
+# MAE(Mean Absolute Errors): 오차들의 절대값의 평균
 
 # lm에서 MSE
 mse_son <- mean((y - y_hat) ^ 2)  #> 38.25799
+mse_son
 rmse_son <- sqrt(mse_son)  #> 6.1853
+rmse_son
+mae_son <- mean(abs(y - y_hat))
+# abs(x): x의 절대값(absolute value)을 리턴하는 함수.
+mae_son
+# RMSE, MAE: 회귀 모델이 예측한 값들이 실제값과 평균적으로 어느정도 오차가 발생하는지를 설명.
+
+
+# 성능 지표를 계산해 주는 함수들을 가지고 있느 패키지 설치
+# install.packages('ModelMetrics')
+library(ModelMetrics)
+search()
+# mse(실제값, 예측값)
+mse(y, y_hat)
+rmse(y, y_hat)
+mae(y, y_hat)
