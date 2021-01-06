@@ -55,7 +55,26 @@ ggplot(data = insurance, mapping = aes(x = age, y = expenses)) +
 ggplot(data = insurance, mapping = aes(x = bmi, y = expenses)) +
   geom_point()
 
-# graphics::pairs() 함수: 산포도 행렬(scatter plot matrix)
+# graphics::pairs() 함수: 산포도 행렬(scatter plot matrix, pair plot)
 pairs(insurance[c('age', 'bmi', 'children', 'expenses')])
 pairs(insurance)
 
+# psych::pairs.panels() 함수: 향상된 scatter plot matrix
+#   대각선: 각 변수의 분포도(히스토그램, 막대 그래프)
+#   대각선 아래쪽: 두 변수 간의 scatter plot
+#   대각선 위쪽: 두 변수 간의 상관 계수(correaltion coefficient)
+pairs.panels(insurance[c('age', 'bmi', 'children', 'expenses')])
+
+# 상관계수 cor(x, y) = cov(x, y) / (sd(x) * sd(y))
+#   -1 <= corrleation coefficinet <= 1
+#   +1에 가까울 수록 양의 상관 관계가 크다고 말함.
+#   -1에 가까울 수록 음의 상관 관계가 크다고 말함.
+#   0에 가까울 수록 상관 관계가 없다고 말함.
+#   (주의) 상관 관계와 인과 관계는 다르다!!!
+# expenses, age의 상관 계수
+cov(insurance$expenses, insurance$age) / (sd(insurance$expenses) * sd(insurance$age))
+# expenses, bmi의 상관 계수
+cov(insurance$expenses, insurance$bmi) / (sd(insurance$expenses) * sd(insurance$bmi))
+
+cor(insurance$expenses, insurance$age)
+cor(insurance$expenses, insurance$bmi)
