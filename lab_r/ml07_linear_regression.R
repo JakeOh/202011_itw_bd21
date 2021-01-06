@@ -134,6 +134,11 @@ rmse(modelObject = lin_reg1)
 
 # lm 모델 객체의 summary
 summary(lin_reg1)
+#> call: 모델 함수. 선형회귀식. 데이터 프레임.
+#> residuals: 모델에서 계산된 residual들의 기술 통계량.
+#> coefficients: 모델이 찾은 선형회귀식의 계수들과 유의 수준(significant levels)
+#> residual standard error: 오차(residauls) 제곱 평균의 제곱근(RMSE)
+#> Multiple R^2, Adjusted R^2: 모델이 훈련 셋을 얼마나 잘 설명하는 지를 측정한 값.
 
 
 
