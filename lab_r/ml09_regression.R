@@ -18,11 +18,33 @@ ggplot(data = red_wine) +
   geom_bar(mapping = aes(x = quality))
 
 # 훈련/테스트 셋 분리(8:2)
+N <- nrow(red_wine)  # 전체 샘플 개수
+train_size <- round(N * 0.8)  # 테스트 샘플: 전체 샘플의 80%
+X_train <- red_wine[1:train_size, ]  # 훈련 셋
+X_test <- red_wine[(train_size + 1):N, ]  # 테스트 셋
 
+prop.table(table(X_train$quality))
+prop.table(table(X_test$quality))
+
+# 2. Linear Regression -----
 # Linear Regression 모델을 학습
-# 훈련 셋의 RMSE, MAE 계산
-# 테스트 셋의 RMSE, MAE 계산
+lin_reg1 <- lm(formula = quality ~ ., data = X_train)
+lin_reg1
+summary(lin_reg1)
+#> Residual standard error: 0.6505
+#> Multiple R-squared:  0.3443,	Adjusted R-squared:  0.3386
 
+# 훈련 셋의 RMSE, MAE 계산
+train_predicts1 <- predict(lin_reg1)
+rmse(actual = X_train$quality, predicted = train_predicts1)  #> 0.6474834
+mae(actual = X_train$quality, predicted = train_predicts1)  #> 0.5012938
+
+# 테스트 셋의 RMSE, MAE 계산
+test_predicts1 <- predict(object = lin_reg1, newdata = X_test)
+rmse(actual = X_test$quality, predicted = test_predicts1)  #> 0.641315
+mae(actual = X_test$quality, predicted = test_predicts1)  #> 0.5065519
+
+# 3. Scaling + Linear Regression -----
 # quality를 제외한 모든 변수들을 scaling(정규화, 표준화) 후
 # Linear Regression 모델을 학습시키고 위의 결과와 비교
 
