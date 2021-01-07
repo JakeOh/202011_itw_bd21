@@ -159,6 +159,17 @@ rmse(actual = test_set$expenses, predicted = test_predicts)  #> 6096.883
 
 # 5. 모델 변경, 평가 -----
 # 1) expenses ~ age + sex + bmi + smoker
+lin_reg2 <- lm(formula = expenses ~ age + sex + bmi + smoker, data = train_set)
+lin_reg2
+summary(lin_reg2)  
+#> Residual standard error: 6088
+#> Multiple R-squared:  0.745,	Adjusted R-squared:  0.7441 
+#> lin_reg1에 비해서 residual std. err.가 더 커졌음.(> 32)
+#> R^2 약간 작아짐(거의 비슷).
 
+test_predicts2 <- predict(object = lin_reg2, newdata = test_set)
+rmse(actual = test_set$expenses, predicted = test_predicts2)  #> 6126.623
+# lin_reg1에 비해서 rmse가 증가.
+
+# 선형(linear) vs 비선형(non-linear)
 # 2) expenses ~ age^2 + sex + bmi + smoker
-
