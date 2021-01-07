@@ -172,4 +172,48 @@ rmse(actual = test_set$expenses, predicted = test_predicts2)  #> 6126.623
 # lin_reg1에 비해서 rmse가 증가.
 
 # 선형(linear) vs 비선형(non-linear)
-# 2) expenses ~ age^2 + sex + bmi + smoker
+# 2) expenses ~ age + age^2 + sex + bmi + smoker
+# 2차 이상의 고차항들을 추가할 때는 파생변수를 추가해야 함.
+insurance_mod <- insurance %>% 
+  mutate(age_square = age * age)
+head(insurance_mod)
+
+X_train <- insurance_mod[1:train_size, ]
+X_test <- insurance_mod[(train_size + 1):1338, ]
+
+lin_reg3 <- lm(formula = expenses ~ age + age_square + sex + bmi + smoker,
+               data = X_train)
+lin_reg3
+summary(lin_reg3)
+#> Residual standard error: 6076
+#> Multiple R-squared:  0.7463,	Adjusted R-squared:  0.7451
+
+test_predicts3 <- predict(object = lin_reg3, newdata = X_test)
+rmse(actual = X_test$expenses, predicted = test_predicts3)  #> 6104.617
+
+# 3) 
+# bmi 변수를 사용해서 overweight 파생 변수를 생성.
+#   bmi >= 30이면 overweight = 1, bmi < 30이면 overweight = 0
+# expense ~ age + sex + ... + age_square + overweight
+
+insurance_mod$overweight <- ifelse(insurance_mod$bmi >= 30, 1, 0)
+# insurance_mod <- insurance_mod %>% 
+#   mutate(overweight = ifelse(insurance_mod$bmi >= 30, 1, 0))
+head(insurance_mod)
+
+X_train <- insurance_mod[1:train_size, ]
+X_test <- insurance_mod[(train_size + 1):1338, ]
+
+lin_reg4 <- lm(formula = expenses ~ ., data = X_train)
+lin_reg4
+summary(lin_reg4)
+#> Residual standard error: 5987
+#> Multiple R-squared:  0.7548,	Adjusted R-squared:  0.7525
+
+test_predicts4 <- predict(object = lin_reg4, newdata = X_test)
+rmse(actual = X_test$expenses, predicted = test_predicts4)  #> 5951.843
+
+# 4) 
+
+
+
