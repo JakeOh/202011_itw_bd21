@@ -95,6 +95,7 @@ mae(X_test2$quality, test_predicts2)  #> 0.5065519
 reg_tree <- rpart(formula = quality ~ ., data = X_train)
 reg_tree
 rpart.plot(reg_tree)
+summary(reg_tree)
 
 # 훈련 셋 예측
 train_predicts3 <- predict(object = reg_tree, newdata = X_train)
