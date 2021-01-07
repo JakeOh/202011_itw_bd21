@@ -23,6 +23,7 @@ train_size <- round(N * 0.8)  # 테스트 샘플: 전체 샘플의 80%
 X_train <- red_wine[1:train_size, ]  # 훈련 셋
 X_test <- red_wine[(train_size + 1):N, ]  # 테스트 셋
 
+# 훈련 셋/테스트 셋이 고르게 분포하는 지 확인.
 prop.table(table(X_train$quality))
 prop.table(table(X_test$quality))
 
@@ -36,6 +37,7 @@ summary(lin_reg1)
 
 # 훈련 셋의 RMSE, MAE 계산
 train_predicts1 <- predict(lin_reg1)
+# lin_reg1$fitted.values
 rmse(actual = X_train$quality, predicted = train_predicts1)  #> 0.6474834
 mae(actual = X_train$quality, predicted = train_predicts1)  #> 0.5012938
 
@@ -44,10 +46,42 @@ test_predicts1 <- predict(object = lin_reg1, newdata = X_test)
 rmse(actual = X_test$quality, predicted = test_predicts1)  #> 0.641315
 mae(actual = X_test$quality, predicted = test_predicts1)  #> 0.5065519
 
+# 테스트 셋에서 residual(= 실제값 - 예측값)들의 분포
+test_residuals <- X_test$quality - test_predicts1
+summary(test_residuals)
+
 # 3. Scaling + Linear Regression -----
 # quality를 제외한 모든 변수들을 scaling(정규화, 표준화) 후
 # Linear Regression 모델을 학습시키고 위의 결과와 비교
 
+# 표준화(standardization): 변수들의 평균을 0, 표준편차 1로 스케일링.
+std_scaler <- function(x) {
+  return((x - mean(x)) / sd(x))
+}
+
+df <- red_wine[, 1:11]  # quality를 제외한 데이터 프레임
+head(df)
+
+# df의 모든 변수들에 std_scaler를 적용
+df_scaled <- data.frame(lapply(X = df, FUN = std_scaler))
+summary(df_scaled)
+sd(df_scaled$alcohol)
+
+# 스케일링이 끝난 데이터 프레임에 quality를 추가.
+df_scaled$quality <- red_wine$quality
+head(df_scaled)
+
+# 훈련 셋/테스트 셋 분리
+X_train2 <- df_scaled[1:train_size, ]
+X_test2 <- df_scaled[(train_size + 1):N, ]
+
+# 훈련 셋 학습
+lin_reg2 <- lm(formula = quality ~ ., data = X_train2)
+summary(lin_reg2)
+#> Residual standard error: 0.6505
+#> Multiple R-squared:  0.3443,	Adjusted R-squared:  0.3386
+
+# 3.
 # Regression Tree 모델을 학습(scaling되지 않은 변수들을 사용)
 # 훈련 셋/테스트 셋의 RMSE, MAE 계산해서 Linear Regression의 결과들과 비교
 
