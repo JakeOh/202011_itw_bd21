@@ -213,7 +213,21 @@ summary(lin_reg4)
 test_predicts4 <- predict(object = lin_reg4, newdata = X_test)
 rmse(actual = X_test$expenses, predicted = test_predicts4)  #> 5951.843
 
-# 4) 
+## 
+head(insurance)
+head(insurance_mod)
+head(X_train)
+head(X_test)
+##
 
+# 4) expenses ~ age + age_square + bmi + smoker + overweight + overweight * smoker
+lin_reg5 <- lm(formula = expenses ~ age + age_square + bmi + smoker + 
+                 overweight + overweight * smoker,
+               data = X_train)
+lin_reg5
+summary(lin_reg5)
+#> Residual standard error: 4568
+#> Multiple R-squared:  0.8567,	Adjusted R-squared:  0.8559
 
-
+test_predicts5 <- predict(object = lin_reg5, newdata = X_test)
+rmse(actual = X_test$expenses, predicted = test_predicts5)  #> 4400.227
