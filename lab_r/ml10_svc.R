@@ -39,7 +39,7 @@ table(iris_test$Species)
 # SVM 모델을 훈련 셋으로 학습시킴.
 svm_clf <- ksvm(x = Species ~ .,         # x = formula(종속변수 ~ .)
                 data = iris_train,       # data = (훈련 셋) 데이터 프레임
-                kernel = 'vanilladot')  # kernel = 'vanilladot': 선형 커널
+                kernel = 'vanilladot')   # kernel = 'vanilladot': 선형 커널
 svm_clf
 
 # 훈련 셋 예측 결과
@@ -53,7 +53,27 @@ test_pred <- predict(object = svm_clf, newdata = iris_test)
 mean(iris_test$Species == test_pred)  # 0.9666667
 CrossTable(x = iris_test$Species, y = test_pred, prop.chisq = FALSE)
 
+# 5. SVM 모델에서 kernel 선택 비교 -----
+# Gaussian RBF kernel
+svm_rbf <- ksvm(x = Species ~ .,
+                data = iris_train,
+                kernel = 'rbfdot')
+svm_rbf
+train_pred <- predict(object = svm_rbf, newdata = iris_train)
+CrossTable(x = iris_train$Species, y = train_pred, prop.chisq = FALSE)
 
+test_pred <- predict(object = svm_rbf, newdata = iris_test)
+mean(iris_test$Species == test_pred)  #> 0.9333333
+CrossTable(x = iris_test$Species, y = test_pred, prop.chisq = FALSE)
 
+# Polynomial kernel
+svm_poly <- ksvm(x = Species ~ ., data = iris_train, kernel = 'polydot')
+svm_poly
 
+train_pred <- predict(object = svm_poly, newdata = iris_train)
+CrossTable(x = iris_train$Species, y = train_pred, prop.chisq = FALSE)
 
+test_pred <- predict(object = svm_poly, newdata = iris_test)
+mean(iris_test$Species == test_pred)
+CrossTable(x = iris_test$Species, y = test_pred, prop.chisq = FALSE)
+#> polynomial kernel에서 degree = 1은 linear kernel과 같은 결과.
