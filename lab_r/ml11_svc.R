@@ -6,11 +6,13 @@ library(kernlab)    # kernel SVM을 구현한 함수 사용. ksvm()
 library(gmodels)    # CrossTable() - confusion matrix
 search()
 
+
 # 1. 데이터 준비 -----
 # wisc_bc_data.csv
 wisc_bc <- read.csv(file = 'data/wisc_bc_data.csv')
 head(wisc_bc)
 str(wisc_bc)
+
 
 # 2. 데이터 탐색, 전처리, 가공 -----
 # id 변수 제거
@@ -21,6 +23,7 @@ df$diagnosis <- factor(df$diagnosis,
                        labels = c('Benign', 'Malignant'))
 str(df)
 summary(df$diagnosis)
+
 
 # 3. SVM 분류기를 학습 -----
 # 훈련 셋:테스트 셋 = 8:2
@@ -40,6 +43,7 @@ svm_clf
 train_pred <- predict(object = svm_clf, newdata = X_train)
 mean(X_train$diagnosis == train_pred)  #> 0.989011
 CrossTable(x = X_train$diagnosis, y = train_pred, prop.chisq = FALSE)
+
 
 # 4. SVM 분류기 평가 -----
 # 테스트 셋에서 정확도, 오차 행렬

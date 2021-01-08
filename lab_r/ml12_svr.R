@@ -1,0 +1,33 @@
+# SVM(Support Vector Machine) Regression(회귀) - 수치 예측
+
+# 패키지를 메모리에 로드
+library(tidyverse)
+library(kernlab)       # ksvm()
+library(ModelMetrics)  # mse(), rmse(), mae()
+library(psych)         # pairs.panel()
+search()
+
+# 1. 데이터 준비 -----
+# SVM을 사용한 콘크리트 강도(strength) 예측
+concrete <- read.csv(file = 'data/concrete.csv')
+head(concrete)
+str(concrete)
+# strength: 콘크리트 강도. 관심(종속) 변수.
+# strength ~ .
+
+# 2. 데이터 탐색 -----
+pairs.panels(concrete)
+
+# 3. SVM 회귀 모델 학습 -----
+# 훈련 셋/테스트 셋 분리
+N <- nrow(concrete)
+train_size <- round(N * 0.8)
+X_train <- concrete[1:train_size, ]  # 훈련 셋
+X_test <- concrete[(train_size + 1):N, ]  # 테스트 셋
+
+summary(X_train$strength)
+summary(X_test$strength)
+
+# SVM 예측기(regressor)를 훈련 셋으로 학습시킴
+svm_reg <- ksvm(x = strength ~ ., data = X_train, kernel = 'vanilladot')
+svm_reg
