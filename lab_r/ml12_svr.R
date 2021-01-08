@@ -63,3 +63,6 @@ rmse(actual = X_test$strength, predicted = poly_pred)  #> 6.503291
 # 6. SVM 이외의 ML 알고리즘과 비교 -----
 # lm(): Linear Regression, rpart(): Regression Tree
 
+
+# 7. 의료비 지출(insurance.csv) 데이터 프레임을 사용해서
+# SVR, Linear Regression, Regression Tree의 결과를 비교해 보세요.
