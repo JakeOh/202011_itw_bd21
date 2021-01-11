@@ -54,3 +54,15 @@ X_test <- insurance[(train_size + 1):N, ]
 # random forest 모델 학습
 forest_reg <- randomForest(formula = expenses ~., data = X_train)
 forest_reg
+#> Mean of squared residuals: 22950374
+
+# 학습된 모델의 훈련 셋에서의 평가
+train_pred <- predict(object = forest_reg, newdata = X_train)
+summary(X_train$expenses - train_pred)
+mse(X_train$expenses, train_pred)  #> 9767728
+
+# 모델을 테스트 셋에서 평가
+test_pred <- predict(object = forest_reg, newdata = X_test)
+summary(X_test$expenses - test_pred)
+mse(X_test$expenses, test_pred)  #> 22319095
+rmse(X_test$expenses, test_pred)  #> 4724.309
