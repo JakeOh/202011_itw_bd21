@@ -54,4 +54,55 @@ CrossTable(x = X_test$Species, y = test_pred, prop.chisq = FALSE)
 
 # 4. Random Forest 분류 연습
 # wisc_bc_data.csv 데이터(Benign/Malignant)
+wisc_bc <- read.csv(file = 'data/wisc_bc_data.csv')
+str(wisc_bc)
+
+# id 변수 제거
+wisc_bc <- wisc_bc[, -1]  # 첫번째 컬럼 제거
+# diagnosis 변수를 Factor 타입으로 변환
+wisc_bc$diagnosis <- factor(wisc_bc$diagnosis,
+                            levels = c('B', 'M'),
+                            labels = c('Benign', 'Malignant'))
+str(wisc_bc)
+
+# 훈련셋:테스트셋 = 8:2
+N <- nrow(wisc_bc)  # 전체 관찰값의 개수
+train_size <- round(N * 0.8)  # 훈련 셋의 관찰값 개수
+X_train <- wisc_bc[1:train_size, ]  # 훈련 셋
+X_test <- wisc_bc[(train_size + 1):N, ]  # 테스트 셋
+
+# Random Forest 모델 훈련
+forest_clf <- randomForest(formula = diagnosis ~ ., data = X_train)
+forest_clf
+#> OOB estimate of  error rate: 5.05%
+
+# 훈련 셋 평가
+train_pred <- predict(object = forest_clf, newdata = X_train)
+CrossTable(x = X_train$diagnosis, y = train_pred, prop.chisq = FALSE)
+
+# 테스트 셋 평가
+test_pred <- predict(object = forest_clf, newdata = X_test)
+mean(X_test$diagnosis == test_pred)  #> 0.9736842
+CrossTable(x = X_test$diagnosis, y = test_pred)
+
+
 # credit.csv 데이터(default/not default)
+credit <- read.csv(file = 'data/credit.csv', stringsAsFactors = TRUE)
+str(credit)
+
+X_train <- credit[1:800, ]
+X_test <- credit[801:1000, ]
+
+table(X_train$default)
+table(X_test$default)
+
+forest_clf <- randomForest(formula = default ~ ., data = X_train)
+forest_clf
+#> OOB estimate of  error rate: 23.75%
+
+train_pred <- predict(object = forest_clf, newdata = X_train)
+CrossTable(x = X_train$default, y = train_pred)
+
+test_pred <- predict(object = forest_clf, newdata = X_test)
+mean(X_test$default == test_pred)  #> 0.76
+CrossTable(x = X_test$default, y = test_pred)
