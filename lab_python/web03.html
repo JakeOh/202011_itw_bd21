@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Web 3</title>
+    <!--
+        HTML: 웹 페이지의 컨텐트
+        CSS: 웹 페이지의 스타일(폰트, 글자색, 바탕색, 배치, ...)
+     -->
+    <style>
+        /* CSS 주석
+        css-selector {
+            attr_name: attr_values;
+        }
+
+        css selector: HTML 요소(element)를 찾는 방법
+        1) HTML 태그 이름
+        2) .클래스
+        3) #아이디
+        4) pseudo selector: 이벤트
+        5) selector1, selector2, ...: 여러개의 요소에 같은 스타일을 적용
+        6) parent child: 조상 요소 아래의 자손 요소에 스타일을 적용
+        7) parent > child: 바로 아래 자식 요소에 스타일 적용
+        */
+
+        /* HTML 문서의 모든 li 태그 요소에 스타일 적용 */
+        li {
+            list-style-type: none;  /* bullet 이미지를 없앰. */
+            display: inline-block;  /* inline 속성과 block 속성을 모두 갖음. */
+            width: 80px;
+            border: 1px solid black;
+            padding: 4px;
+        }
+
+        /* HTML 문서의 모든 a 태그에 스타일 적용 */
+        a {
+            text-decoration: none;  /* 링크의 밑줄을 제거 */
+            font-weight: bold;  /* 폰트를 bold체로 */
+        }
+
+        /* HTML 문서의 모든 a 태그들 중 방문했던 링크들에 스타일 적용 */
+        a:visited {
+            color: black;  /* 글자색을 검은색으로 */
+        }
+
+        /* HTML 문서의 모든 c1 클래스를 찾아서 스타일 적용 */
+        .c1 {
+            border: 2px solid gray;
+            margin: 16px;
+            padding: 8px;
+        }
+
+        .c2 {
+            border: 2px dashed black;
+            margin: 16px;
+            padding: 8px;
+        }
+
+        /* HTML 문서에서 아이디가 id1인 요소를 찾아서 스타일 적용 */
+        #id1 {
+            color: blue;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <h1>CSS(Cascade Style Sheet)</h1>
+    <ul class="menu"> <!-- unordered list -->
+        <li class="menu_item">  <!-- list item -->
+            <a href="https://www.daum.net/">다음</a>
+        </li>
+        <li class="menu_item">  <!-- list item -->
+            <a href="https://www.naver.com/">네이버</a>
+        </li>
+        <li class="menu_item">  <!-- list item -->
+            <a href="https://www.google.com/">구글</a>
+        </li>
+    </ul>
+
+    <div class="c1">여기는 c1 클래스입니다.</div>
+    <div class="c1">여기도 c1 클래스입니다.</div>
+    <div class="c2">여기는 c2 클래스입니다.</div>
+    <div class="c2" id="id1">여기는 c2 클래스, 아이디는 id1입니다.</div>
+
+</body>
+</html>
